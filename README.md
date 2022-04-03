@@ -1,0 +1,2 @@
+# SterRob
+Projekt matrycy fotorezystorów 
