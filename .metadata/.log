@@ -1,26 +1,39 @@
-!SESSION 2022-04-03 22:14:14.051 -----------------------------------------------
+!SESSION 2022-04-04 19:34:47.322 -----------------------------------------------
 eclipse.buildId=Version 1.4.0
 java.version=1.8.0_252
 java.vendor=AdoptOpenJDK
 BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_GB
-Command-line arguments:  -os linux -ws gtk -arch x86_64
+Command-line arguments:  -data /home/marcel/Documents/semestrVI/SterRob -os linux -ws gtk -arch x86_64
 
-!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-04-03 22:15:11.032
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-04-04 19:34:53.234
 !MESSAGE Log4j initialized with config file /home/marcel/Documents/semestrVI/SterRob/.metadata/.log4j.xml
 
-!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-04-03 22:15:13.874
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-04-04 19:34:55.237
 !MESSAGE Started RMI Server, listening on port 41337
 
-!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2022-04-03 22:15:14.267
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2022-04-04 19:34:55.503
+!MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
+!SESSION 2022-04-04 19:39:58.327 -----------------------------------------------
+eclipse.buildId=Version 1.4.0
+java.version=1.8.0_252
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_GB
+Command-line arguments:  -data /home/marcel/Documents/semestrVI/SterRob -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-04-04 19:40:02.958
+!MESSAGE Log4j initialized with config file /home/marcel/Documents/semestrVI/SterRob/.metadata/.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2022-04-04 19:40:06.788
 !MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
 
-!ENTRY org.eclipse.ui 4 4 2022-04-03 22:17:07.900
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-04-04 19:40:07.279
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.ui 4 4 2022-04-04 19:40:31.504
 !MESSAGE Unable to create part
 !STACK 1
-org.eclipse.ui.PartInitException: Invalid Input: Must be project's active .ioc file.
-
-Project's 'stmProject' active one is 'stmProject.ioc' file
-	at com.st.stm32cube.common.mx.editor.CubeMxEditor.init(CubeMxEditor.java:795)
+org.eclipse.ui.PartInitException: Invalid Input: Must be IFileEditorInput
+	at com.st.stm32cube.common.mx.editor.CubeMxEditor.init(CubeMxEditor.java:777)
 	at org.eclipse.ui.internal.EditorReference.initialize(EditorReference.java:353)
 	at org.eclipse.ui.internal.e4.compatibility.CompatibilityPart.create(CompatibilityPart.java:340)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
@@ -45,8 +58,7 @@ Project's 'stmProject' active one is 'stmProject.ioc' file
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$2.run(PartRenderingEngine.java:733)
 	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
 	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.createGui(PartRenderingEngine.java:717)
-	at org.eclipse.e4.ui.workbench.renderers.swt.StackRenderer.showTab(StackRenderer.java:1293)
-	at org.eclipse.e4.ui.workbench.renderers.swt.LazyStackRenderer.lambda$0(LazyStackRenderer.java:75)
+	at org.eclipse.e4.ui.internal.workbench.PartServiceImpl$1.handleEvent(PartServiceImpl.java:107)
 	at org.eclipse.e4.ui.services.internal.events.UIEventHandler.lambda$0(UIEventHandler.java:38)
 	at org.eclipse.swt.widgets.Synchronizer.syncExec(Synchronizer.java:236)
 	at org.eclipse.ui.internal.UISynchronizer.syncExec(UISynchronizer.java:146)
@@ -76,24 +88,14 @@ Project's 'stmProject' active one is 'stmProject.ioc' file
 	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:72)
 	at org.eclipse.ui.internal.WorkbenchPage.openEditor(WorkbenchPage.java:3108)
 	at org.eclipse.ui.internal.WorkbenchPage.openEditor(WorkbenchPage.java:3078)
-	at org.eclipse.ui.internal.WorkbenchPage.openEditor(WorkbenchPage.java:3069)
-	at org.eclipse.ui.ide.IDE.openEditor(IDE.java:570)
-	at org.eclipse.ui.ide.IDE.openEditor(IDE.java:525)
-	at org.eclipse.ui.actions.OpenFileAction.openFile(OpenFileAction.java:103)
-	at org.eclipse.ui.actions.OpenSystemEditorAction.run(OpenSystemEditorAction.java:96)
-	at org.eclipse.ui.actions.RetargetAction.run(RetargetAction.java:215)
-	at org.eclipse.ui.navigator.CommonNavigatorManager$1.open(CommonNavigatorManager.java:183)
-	at org.eclipse.ui.OpenAndLinkWithEditorHelper$InternalListener.open(OpenAndLinkWithEditorHelper.java:48)
-	at org.eclipse.jface.viewers.StructuredViewer$2.run(StructuredViewer.java:797)
-	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
-	at org.eclipse.ui.internal.JFaceUtil.lambda$0(JFaceUtil.java:47)
-	at org.eclipse.jface.util.SafeRunnable.run(SafeRunnable.java:174)
-	at org.eclipse.jface.viewers.StructuredViewer.fireOpen(StructuredViewer.java:794)
-	at org.eclipse.jface.viewers.StructuredViewer.handleOpen(StructuredViewer.java:1110)
-	at org.eclipse.ui.navigator.CommonViewer.handleOpen(CommonViewer.java:454)
-	at org.eclipse.jface.util.OpenStrategy.fireOpenEvent(OpenStrategy.java:275)
-	at org.eclipse.jface.util.OpenStrategy.access$2(OpenStrategy.java:270)
-	at org.eclipse.jface.util.OpenStrategy$1.handleEvent(OpenStrategy.java:310)
+	at org.eclipse.ui.internal.WorkbenchPage.openEditor(WorkbenchPage.java:3061)
+	at org.eclipse.ui.ide.IDE.openEditorOnFileStore(IDE.java:1377)
+	at org.eclipse.ui.internal.ide.actions.OpenLocalFileAction.run(OpenLocalFileAction.java:100)
+	at org.eclipse.ui.internal.ide.actions.OpenLocalFileAction.run(OpenLocalFileAction.java:73)
+	at org.eclipse.ui.internal.PluginAction.runWithEvent(PluginAction.java:232)
+	at org.eclipse.ui.internal.WWinPluginAction.runWithEvent(WWinPluginAction.java:218)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:580)
+	at org.eclipse.jface.action.ActionContributionItem.lambda$4(ActionContributionItem.java:412)
 	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89)
 	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:5618)
 	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1405)
@@ -121,27 +123,23 @@ Project's 'stmProject' active one is 'stmProject.ioc' file
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:597)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1468)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1441)
-!SUBENTRY 1 org.eclipse.ui 4 0 2022-04-03 22:17:07.902
-!MESSAGE Invalid Input: Must be project's active .ioc file.
-
-Project's 'stmProject' active one is 'stmProject.ioc' file
-!SESSION 2022-04-03 22:24:20.394 -----------------------------------------------
+!SUBENTRY 1 org.eclipse.ui 4 0 2022-04-04 19:40:31.507
+!MESSAGE Invalid Input: Must be IFileEditorInput
+!SESSION 2022-04-04 19:56:27.713 -----------------------------------------------
 eclipse.buildId=Version 1.4.0
 java.version=1.8.0_252
 java.vendor=AdoptOpenJDK
 BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_GB
 Command-line arguments:  -os linux -ws gtk -arch x86_64
 
-!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-04-03 22:24:27.949
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2022-04-04 19:56:56.632
 !MESSAGE Log4j initialized with config file /home/marcel/Documents/semestrVI/SterRob/.metadata/.log4j.xml
 
-!ENTRY org.eclipse.ui 4 4 2022-04-03 22:24:29.858
+!ENTRY org.eclipse.ui 4 4 2022-04-04 19:56:57.672
 !MESSAGE Unable to create part
 !STACK 1
-org.eclipse.ui.PartInitException: Invalid Input: Must be project's active .ioc file.
-
-Project's 'stmProject' active one is 'stmProject.ioc' file
-	at com.st.stm32cube.common.mx.editor.CubeMxEditor.init(CubeMxEditor.java:795)
+org.eclipse.ui.PartInitException: Invalid Input: Must be IFileEditorInput
+	at com.st.stm32cube.common.mx.editor.CubeMxEditor.init(CubeMxEditor.java:777)
 	at org.eclipse.ui.internal.EditorReference.initialize(EditorReference.java:353)
 	at org.eclipse.ui.internal.e4.compatibility.CompatibilityPart.create(CompatibilityPart.java:340)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
@@ -266,13 +264,36 @@ Project's 'stmProject' active one is 'stmProject.ioc' file
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:597)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1468)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1441)
-!SUBENTRY 1 org.eclipse.ui 4 0 2022-04-03 22:24:29.860
-!MESSAGE Invalid Input: Must be project's active .ioc file.
+!SUBENTRY 1 org.eclipse.ui 4 0 2022-04-04 19:56:57.676
+!MESSAGE Invalid Input: Must be IFileEditorInput
 
-Project's 'stmProject' active one is 'stmProject.ioc' file
-
-!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2022-04-03 22:24:32.053
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2022-04-04 19:57:00.612
 !MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
 
-!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-04-03 22:24:32.341
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2022-04-04 19:57:01.507
 !MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2022-04-04 19:59:43.686
+!MESSAGE Indexed 'stmProject' (0 sources, 0 headers) in 0.008 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2022-04-04 19:59:55.122
+!MESSAGE Indexed 'stmProject' (36 sources, 44 headers) in 6.7 sec: 6,670 declarations; 66,324 references; 4 unresolved inclusions; 320 syntax errors; 4,731 unresolved names (6.1%)
+
+!ENTRY org.eclipse.jface 2 0 2022-04-04 20:04:45.684
+!MESSAGE Ignored reentrant call while viewer is busy. This is only logged once per viewer instance, but similar calls will still be ignored.
+!STACK 0
+java.lang.RuntimeException
+	at org.eclipse.jface.viewers.ColumnViewer.checkBusy(ColumnViewer.java:764)
+	at org.eclipse.jface.viewers.ColumnViewer.update(ColumnViewer.java:543)
+	at org.eclipse.ui.navigator.CommonViewer.update(CommonViewer.java:515)
+	at org.eclipse.jface.viewers.StructuredViewer.update(StructuredViewer.java:1965)
+	at org.eclipse.ui.internal.navigator.resources.nested.NestedProjectsLabelProvider.lambda$2(NestedProjectsLabelProvider.java:87)
+	at java.util.concurrent.CompletableFuture.uniAccept(CompletableFuture.java:670)
+	at java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:646)
+	at java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:488)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1609)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1596)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
