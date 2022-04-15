@@ -30,6 +30,7 @@
 /* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdio.h>
+#include <time.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,8 +61,16 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t *buf = "Marcel Konieczny jest ok";
-uint8_t readbuf[100];
+time_t czas;
+//struct tm ptr;
+
+//time(&ptr);
+//ptr.tm_year=40;
+
+
+
+uint16_t buf =0xdfff ;
+uint16_t readbuf;
 int a = 10;
 
 RTC_TimeTypeDef Time;
@@ -103,6 +112,8 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
+
+/*Przetestowane i dziala zakomentowane bo inicjalizacja dlugo trwa
 	//Inicjalizacja
 	if (CSP_QUADSPI_Init() != HAL_OK) {
 		Error_Handler();
@@ -111,23 +122,21 @@ int main(void)
 	if (CSP_QSPI_Erase_Chip() != HAL_OK) {
 		Error_Handler();
 	}
-
 	//Ustawienie daty i godziny
 	if (setDate(14, 04, 22, 3))
 		Error_Handler();
 	if (setTime(0, 33, 17))
 		Error_Handler();
 
-
-
-
-	if (CSP_QSPI_Write(buf, 0, strlen(buf)) != HAL_OK) {
+	if (CSP_QSPI_Write(&buf, 0, sizeof(buf)) != HAL_OK) {
 		Error_Handler();
 	}
 
-	if (CSP_QSPI_Read(readbuf, 0, 100) != HAL_OK) {
+	if (CSP_QSPI_Read(readbuf, 0, 2) != HAL_OK) {
 		Error_Handler();
 	}
+*/
+
 
   /* USER CODE END 2 */
 

@@ -114,7 +114,7 @@ uint8_t setDate(int day,int month,int year,int weekDay) {
 	  Date.WeekDay=weekDay;
 	  Date.Year=year;
 
-	 if( HAL_RTC_SetDate(&hrtc, &Date, RTC_FORMAT_BIN))
+	 if( HAL_RTC_SetDate(&hrtc, &Date, RTC_FORMAT_BIN)==HAL_OK)
 		 return HAL_OK;
 	 else
 		 return HAL_ERROR;
@@ -126,7 +126,7 @@ uint8_t setTime(int sec,int min,int hour){
 	  Time.Minutes=min;
 	  Time.Hours=hour;
 
-	  if(HAL_RTC_SetTime(&hrtc, &Time, RTC_FORMAT_BIN))
+	  if(HAL_RTC_SetTime(&hrtc, &Time, RTC_FORMAT_BIN)!=HAL_OK)
 		  return HAL_OK;
 	  else
 		  return HAL_ERROR;
