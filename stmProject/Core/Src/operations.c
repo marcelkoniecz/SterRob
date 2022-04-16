@@ -50,8 +50,10 @@ uint16_t sendData() {
 		dataNum++;
 		curAddr = curAddr - 10;
 		//strncpy(uartData,readData,20);
-		printf("%hn", readData);
+		printf("%s", readData);
 	}
+	if(CSP_QSPI_Erase_Chip()!= HAL_OK)
+		return -2;
 	return dataNum;
 }
 
