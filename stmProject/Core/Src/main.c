@@ -113,7 +113,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 
-/*Przetestowane i dziala zakomentowane bo inicjalizacja dlugo trwa
+/*Przetestowane i dziala zakomentowane bo inicjalizacja qspi dlugo trwa
 	//Inicjalizacja
 	if (CSP_QUADSPI_Init() != HAL_OK) {
 		Error_Handler();

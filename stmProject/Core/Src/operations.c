@@ -5,7 +5,8 @@
  *      Author: marcel
  */
 #include "main.h"
-
+#include <stdio.h>
+#include <string.h>
 #define FLASH_SIZE_HERE 0x00FFFFFF
 
 //Variable with current address
@@ -20,7 +21,7 @@ struct measurement {
 //Write date and data to memory
 HAL_StatusTypeDef storeData(struct measurement mes) {
 
-	if ((curAddr + 10) >= FLASH_SIZE_HERE)
+	if ((curAddr + 20) >= FLASH_SIZE_HERE)
 		return HAL_ERROR;
 
 	if (CSP_QSPI_Write(&(mes.time), curAddr, 2) != HAL_OK)
@@ -29,19 +30,28 @@ HAL_StatusTypeDef storeData(struct measurement mes) {
 	curAddr++;
 
 	for (int i = 0; i < 9; i++) {
-		if (CSP_QSPI_Write(&(mes.meas[i]), 0, 2) != HAL_OK)
+		if (CSP_QSPI_Write(&(mes.meas[i]), curAddr, 2) != HAL_OK)
 			return HAL_ERROR;
 		curAddr++;
 	}
-return HAL_OK;
+	return HAL_OK;
 }
 
-HAL_DMA_StateTypeDef returnData(uint16_t howMany){
-
-
+uint16_t sendData() {
+	uint16_t dataNum = 0;
+	uint32_t tmpCurAddr = curAddr;
+	uint16_t readData[20];
+	//string uartData;
+	if (curAddr < 20)
+		return dataNum;
+	for (int i = 0; i < (tmpCurAddr / 20); i++) {
+		if (CSP_QSPI_Read(&readData, curAddr, 20) != HAL_OK)
+			return -1;
+		dataNum++;
+		curAddr = curAddr - 10;
+		//strncpy(uartData,readData,20);
+		printf("%hn", readData);
+	}
+	return dataNum;
 }
-
-
-
-
 
