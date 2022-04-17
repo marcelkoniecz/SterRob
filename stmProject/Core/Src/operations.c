@@ -7,32 +7,28 @@
 #include "main.h"
 #include <stdio.h>
 #include <string.h>
-#define FLASH_SIZE_HERE 0x00FFFFFF
+#include "operations.h"
 
 //Variable with current address
 uint32_t curAddr = 0;
-
-//Structure with measurements
-struct measurement {
-	uint16_t time;
-	uint16_t meas[9];
-};
 
 //Write date and data to memory
 HAL_StatusTypeDef storeData(struct measurement mes) {
 
 	if ((curAddr + 20) >= FLASH_SIZE_HERE)
 		return HAL_ERROR;
-
-	if (CSP_QSPI_Write(&(mes.time), curAddr, 2) != HAL_OK)
+	uint16_t tmp = 0;
+	tmp = mes.time;
+	if (CSP_QSPI_Write(&tmp, curAddr, 2) != HAL_OK)
 		return HAL_ERROR;
 
-	curAddr++;
+	curAddr = curAddr + 2;
 
 	for (int i = 0; i < 9; i++) {
-		if (CSP_QSPI_Write(&(mes.meas[i]), curAddr, 2) != HAL_OK)
+		tmp = mes.meas[i];
+		if (CSP_QSPI_Write(&tmp, curAddr, 2) != HAL_OK)
 			return HAL_ERROR;
-		curAddr++;
+		curAddr = curAddr + 2;
 	}
 	return HAL_OK;
 }
@@ -42,17 +38,16 @@ uint16_t sendData() {
 	uint32_t tmpCurAddr = curAddr;
 	uint16_t readData[20];
 	//string uartData;
-	if (curAddr < 20)
+	if (curAddr < 18)
 		return dataNum;
 	for (int i = 0; i < (tmpCurAddr / 20); i++) {
-		if (CSP_QSPI_Read(&readData, curAddr, 20) != HAL_OK)
+		if (CSP_QSPI_Read(&readData, dataNum * 20, 20) != HAL_OK)
 			return -1;
 		dataNum++;
-		curAddr = curAddr - 10;
-		//strncpy(uartData,readData,20);
-		printf("%s", readData);
+		curAddr = curAddr - 20;
+		//printf("%s", readData);
 	}
-	if(CSP_QSPI_Erase_Chip()!= HAL_OK)
+	if (CSP_QSPI_Erase_Chip() != HAL_OK)
 		return -2;
 	return dataNum;
 }
