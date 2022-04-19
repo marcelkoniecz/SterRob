@@ -65,15 +65,17 @@ void SystemClock_Config(void);
 time_t czas;
 //struct tm ptr;
 
-//time(&ptr);
-//ptr.tm_year=40;
 
-uint16_t buf = 1000;
-uint16_t readbuf;
+//time(&ptr);
+//ptr.tm_sec=40;
+
+uint32_t buf = 1000000;
+uint16_t readbuf[2];
 int a = 10;
 
 RTC_TimeTypeDef Time;
 RTC_DateTypeDef Date;
+
 /* USER CODE END 0 */
 
 /**
@@ -124,19 +126,20 @@ int main(void) {
 	 Error_Handler();
 	 if (setTime(0, 33, 17))
 	 Error_Handler();
+	// uint32_t sec=RTCtoSec();
 
 	/* if (CSP_QSPI_Write(&buf, 0, sizeof(buf)) != HAL_OK) {
 	 Error_Handler();
 	}
 
-	 if (CSP_QSPI_Read(&readbuf, 0, 2) != HAL_OK) {
+	 if (CSP_QSPI_Read(&readbuf, 0, 4) != HAL_OK) {
 	 Error_Handler();
 	 }*/
 
 	 //Testy zapisow i odczytow do pamieci
 	struct measurement mes[3];
 	for(int i=0;i<3;i++){
-	mes[i].time = 1000+i;
+	mes[i].time = 10000000+i;
 	mes[i].meas[0] = 1+i;
 	mes[i].meas[1] = 8+i;
 	mes[i].meas[2] = 4+i;

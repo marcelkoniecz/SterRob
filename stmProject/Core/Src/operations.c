@@ -17,13 +17,13 @@ HAL_StatusTypeDef storeData(struct measurement mes) {
 
 	if ((curAddr + 20) >= FLASH_SIZE_HERE)
 		return HAL_ERROR;
-	uint16_t tmp = 0;
-	tmp = mes.time;
-	if (CSP_QSPI_Write(&tmp, curAddr, 2) != HAL_OK)
+	uint32_t tmp2 = 0;
+	tmp2 = mes.time;
+	if (CSP_QSPI_Write(&tmp2, curAddr, 4) != HAL_OK)
 		return HAL_ERROR;
 
-	curAddr = curAddr + 2;
-
+	curAddr = curAddr + 4;
+	uint16_t tmp = 0;
 	for (int i = 0; i < 9; i++) {
 		tmp = mes.meas[i];
 		if (CSP_QSPI_Write(&tmp, curAddr, 2) != HAL_OK)
@@ -40,8 +40,8 @@ uint16_t sendData() {
 	//string uartData;
 	if (curAddr < 18)
 		return dataNum;
-	for (int i = 0; i < (tmpCurAddr / 20); i++) {
-		if (CSP_QSPI_Read(&readData, dataNum * 20, 20) != HAL_OK)
+	for (int i = 0; i < (tmpCurAddr / 24); i++) {
+		if (CSP_QSPI_Read(&readData, dataNum * 24, 24) != HAL_OK)
 			return -1;
 		dataNum++;
 		curAddr = curAddr - 20;

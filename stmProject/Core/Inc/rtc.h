@@ -41,6 +41,8 @@ void MX_RTC_Init(void);
 /* USER CODE BEGIN Prototypes */
 uint8_t setDate(int day,int month,int year,int weekDay);
 uint8_t setTime(int sec,int min,int hour);
+uint32_t RTCtoSec();
+uint32_t monthToSec(uint8_t month, uint8_t year);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

@@ -14,7 +14,7 @@
 
 //Structure with measurements
 struct measurement {
-	uint16_t time;
+	uint32_t time;
 	uint16_t meas[9];
 };
 
