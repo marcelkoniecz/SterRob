@@ -15,7 +15,7 @@ uint32_t curAddr = 0;
 //Write date and data to memory
 HAL_StatusTypeDef storeData(struct measurement mes) {
 
-	if ((curAddr + 20) >= FLASH_SIZE_HERE)
+	if ((curAddr + 22) >= FLASH_SIZE_HERE)
 		return HAL_ERROR;
 	uint32_t tmp2 = 0;
 	tmp2 = mes.time;
@@ -36,16 +36,19 @@ HAL_StatusTypeDef storeData(struct measurement mes) {
 uint16_t sendData() {
 	uint16_t dataNum = 0;
 	uint32_t tmpCurAddr = curAddr;
-	uint16_t readData[20];
+	static uint16_t readData[11];
 	//string uartData;
 	if (curAddr < 18)
 		return dataNum;
-	for (int i = 0; i < (tmpCurAddr / 24); i++) {
-		if (CSP_QSPI_Read(&readData, dataNum * 24, 24) != HAL_OK)
+	for (int i = 0; i < (tmpCurAddr / 22); i++) {
+		if (CSP_QSPI_Read(&readData, dataNum * 22, 22) != HAL_OK)
 			return -1;
 		dataNum++;
-		curAddr = curAddr - 20;
-		//printf("%s", readData);
+		curAddr = curAddr - 22;
+		printf("%d. ", i);
+		for (int i = 0; i < 11; i++)
+			printf("%d ", readData[i]);
+		printf("\n\r");
 	}
 	if (CSP_QSPI_Erase_Chip() != HAL_OK)
 		return -2;

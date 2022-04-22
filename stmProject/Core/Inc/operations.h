@@ -9,7 +9,6 @@
 #define INC_OPERATIONS_H_
 #include "main.h"
 
-
 #define FLASH_SIZE_HERE 0x00100000
 
 //Structure with measurements

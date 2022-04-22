@@ -1,5 +1,6 @@
 "Core/Src/adc.o"
 "Core/Src/gpio.o"
+"Core/Src/hc4067.o"
 "Core/Src/main.o"
 "Core/Src/operations.o"
 "Core/Src/quadspi.o"
