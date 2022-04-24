@@ -112,6 +112,7 @@ int main(void)
   MX_RTC_Init();
   MX_TIM2_Init();
   MX_USART2_UART_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
 	 //Inicjalizacja
@@ -138,8 +139,10 @@ int main(void)
 	 Error_Handler();
 	 }*/
 
-	 //Testy zapisow i odczytow do pamieci
-	 int n=1000;
+	 /**
+	//Testy zapisow i odczytow do pamieci
+
+	int n=1000;
 	struct measurement mes[n];
 	for(int i=0;i<n;i++){
 	mes[i].time = 10000000+i;
@@ -155,12 +158,14 @@ int main(void)
 	storeData(mes[i]);
 	}
 	sendData();
+	**/
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -239,6 +244,18 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+// Callback: timer has rolled over
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  // Check which version of the timer triggered this callback and toggle LED
+uint16_t data[9];
+  if (htim == &htim3)
+  {
+	  readMultipleSensors(&hadc1, data, 9);
+	  printData(data,9);
+  }
+}
 
 /* USER CODE END 4 */
 
