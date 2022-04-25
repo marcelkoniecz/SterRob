@@ -39,11 +39,11 @@ extern RTC_HandleTypeDef hrtc;
 void MX_RTC_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+
 HAL_StatusTypeDef setDate(uint8_t day, uint8_t month, uint8_t year, uint8_t weekDay);
 HAL_StatusTypeDef setTime(uint8_t sec, uint8_t min, uint8_t hour);
 uint32_t getCurrTimestamp();
-uint32_t RTCtoSec();
-uint32_t monthToSec(uint8_t month, uint8_t year);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

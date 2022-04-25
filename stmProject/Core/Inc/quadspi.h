@@ -96,11 +96,6 @@ void MX_QUADSPI_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
-//uint8_t WriteEnable(QSPI_HandleTypeDef* qspi);
-//uint8_t qspiMemWrite(QSPI_HandleTypeDef* qspi, uint32_t address, uint32_t size,uint8_t* Data);
-//uint8_t qspiMemRead(QSPI_HandleTypeDef* qspi, uint32_t address, uint32_t size,uint8_t* Data);
-
-
 uint8_t CSP_QUADSPI_Init(void);
 uint8_t CSP_QSPI_EraseSector(uint32_t EraseStartAddress, uint32_t EraseEndAddress);
 uint8_t CSP_QSPI_Write(uint8_t* buffer, uint32_t address, uint32_t buffer_size);
@@ -108,8 +103,6 @@ uint8_t CSP_QSPI_Read(uint8_t* pData, uint32_t ReadAddr, uint32_t Size);
 uint8_t CSP_QSPI_Erase_Block(uint32_t BlockAddress);
 uint8_t CSP_QSPI_EnableMemoryMappedMode(void);
 uint8_t CSP_QSPI_Erase_Chip (void);
-
-
 
 /* USER CODE END Prototypes */
 

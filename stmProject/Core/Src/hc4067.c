@@ -1,10 +1,3 @@
-/*
- * hc4067.c
- *
- *  Created on: Apr 18, 2022
- *      Author: kuchto
- */
-
 #include "hc4067.h"
 #include "main.h"
 
@@ -55,41 +48,3 @@ void readMeasurements(ADC_HandleTypeDef *hadc, Measurement *m)
 
 	HAL_GPIO_WritePin(EN_GPIO_Port, EN_Pin, SET);
 }
-
-void printData(uint16_t *data, uint8_t num)
-{
- uint8_t  i;
- float p;
-
-  for(i = 0; i < num; ++i)
-    {
-      p = (3.3 * data[i]) / 4095;
-      printf("Sensor %d: %d (%3.3f)\r\n", i, data[i],p );
-    }
-}
-
-void printTimestamp(RTC_HandleTypeDef *hrtc)
-{
-  RTC_TimeTypeDef currentTime;
-  RTC_DateTypeDef currentDate;
-  time_t timestamp;
-  struct tm currTime;
-
-  HAL_RTC_GetTime(hrtc, &currentTime, RTC_FORMAT_BIN);
-  HAL_RTC_GetDate(hrtc, &currentDate, RTC_FORMAT_BIN);
-
-  currTime.tm_year = currentDate.Year + 100;
-  currTime.tm_mday = currentDate.Date;
-  currTime.tm_mon  = currentDate.Month - 1;
-
-  currTime.tm_hour = currentTime.Hours;
-  currTime.tm_min  = currentTime.Minutes;
-  currTime.tm_sec  = currentTime.Seconds;
-
-  timestamp = mktime(&currTime);
-
-  printf("%s\r\n",ctime(&timestamp));
-  printf("Time stamp: %lu s \r\n",(uint32_t)timestamp);
-  printf("Size time_t: %d, size uint32_t: %d \r\n", sizeof(time_t), sizeof(uint32_t));
-}
-

@@ -36,7 +36,7 @@ HAL_StatusTypeDef storeData(struct measurement mes) {
 uint16_t sendData() {
 	uint16_t dataNum = 0;
 	uint32_t tmpCurAddr = curAddr;
-	static uint16_t readData[11];
+	uint16_t readData[11];
 	uint32_t timestamp;
 
 	if (curAddr < 18)
@@ -91,11 +91,14 @@ uint8_t parseCommand(uint8_t *buf)
 {
 	switch(buf[0])
 	{
-	case 'T':
+	case 'T': // print current time and timestamp
 		printCurrTime();
 		break;
-	case 'D':
+	case 'D': // print all saved measurments and clear memory
 		sendData();
+		break;
+	case 'P': // stop making new measurements
+		working_mode = 0;
 		break;
 	default:
 		return 1;

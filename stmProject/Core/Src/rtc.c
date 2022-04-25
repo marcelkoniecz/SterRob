@@ -132,6 +132,7 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 }
 
 /* USER CODE BEGIN 1 */
+
 HAL_StatusTypeDef setDate(uint8_t day, uint8_t month, uint8_t year, uint8_t weekDay) {
 	RTC_DateTypeDef Date;
 	Date.Date = day;
@@ -175,67 +176,6 @@ uint32_t getCurrTimestamp()
 	  return (uint32_t)timestamp;
 }
 
-uint32_t RTCtoSec() {
-	RTC_TimeTypeDef Time;
-	RTC_DateTypeDef Date;
-	HAL_RTC_GetTime(&hrtc, &Time, RTC_FORMAT_BIN);
-	HAL_RTC_GetDate(&hrtc, &Date, RTC_FORMAT_BIN);
-	uint32_t timeSec = 0;
-	timeSec += Time.Seconds; //Adding seconds
-	timeSec += (Time.Minutes * 60); //Convert minutes to seconds
-	timeSec += (Time.Hours * 3600); //Convert hours to seconds
-	timeSec += (Date.Date * 24 * 3600); //Convert date to seconds
-	timeSec += monthToSec(Date.Month, Date.Year);
-	timeSec += (Date.Date * 24 * 3600); //Convert month to seconds
-	timeSec += (Date.Year * 365.25 * 24 * 3600); //convert year to seconds
-	return timeSec;
-
-}
-uint32_t monthToSec(uint8_t month, uint8_t year) {
-	uint32_t sec = 0;
-	if (year % 4 == 0 && year != 0 && month >= 2)
-		sec += 1;
-	switch (month) {
-	case 1:
-		sec += ((31 * 1 + 30 * 0) * 24 * 3600);
-		break;
-	case 2:
-		sec += ((31 * 1 + 30 * 0 + 28) * 24 * 3600);
-		break;
-	case 3:
-		sec += ((31 * 2 + 28) * 24 * 3600);
-		break;
-	case 4:
-		sec += ((31 * 2 + 30 + 28) * 24 * 3600);
-		break;
-	case 5:
-		sec += ((31 * 3 + 30 + 28) * 24 * 3600);
-		break;
-	case 6:
-		sec += ((31 * 3 + 30 * 2 + 28) * 24 * 3600);
-		break;
-	case 7:
-		sec += ((31 * 4 + 30 * 2 + 28) * 24 * 3600);
-		break;
-	case 8:
-		sec += ((31 * 5 + 30 * 2 + 28) * 24 * 3600);
-		break;
-	case 9:
-		sec += ((31 * 5 + 30 * 3 + 28) * 24 * 3600);
-		break;
-	case 10:
-		sec += ((31 * 6 + 30 * 3 + 28) * 24 * 3600);
-		break;
-	case 11:
-		sec += ((31 * 6 + 30 * 4 + 28) * 24 * 3600);
-		break;
-	case 12:
-		sec += ((31 * 7 + 30 * 4 + 28) * 24 * 3600);
-		break;
-	}
-	return sec;
-
-}
 
 /* USER CODE END 1 */
 

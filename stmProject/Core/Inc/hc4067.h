@@ -16,8 +16,4 @@ void readMultipleSensors(ADC_HandleTypeDef  *hadc, uint16_t *data, uint8_t num )
 
 void readMeasurements(ADC_HandleTypeDef *hadc, Measurement *m);
 
-void printData(uint16_t *data, uint8_t num);
-
-void printTimestamp(RTC_HandleTypeDef *hrtc);
-
 #endif /* INC_HC4067_H_ */
