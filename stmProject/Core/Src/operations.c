@@ -4,8 +4,8 @@
  *  Created on: Apr 15, 2022
  *      Author: marcel
  */
-#include "main.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "operations.h"
 
@@ -62,47 +62,4 @@ uint16_t sendData() {
 		Error_Handler();
 
 	return dataNum;
-}
-
-void printCurrTime()
-{
-  RTC_TimeTypeDef currentTime;
-  RTC_DateTypeDef currentDate;
-  time_t timestamp;
-  struct tm currTime;
-
-  HAL_RTC_GetTime(&hrtc, &currentTime, RTC_FORMAT_BIN);
-  HAL_RTC_GetDate(&hrtc, &currentDate, RTC_FORMAT_BIN);
-
-  currTime.tm_year = currentDate.Year + 100;
-  currTime.tm_mday = currentDate.Date;
-  currTime.tm_mon  = currentDate.Month - 1;
-
-  currTime.tm_hour = currentTime.Hours;
-  currTime.tm_min  = currentTime.Minutes;
-  currTime.tm_sec  = currentTime.Seconds;
-
-  timestamp = mktime(&currTime);
-
-  printf("%s as timestamp %lu\r\n",ctime(&timestamp), (uint32_t)timestamp);
-}
-
-uint8_t parseCommand(uint8_t *buf)
-{
-	switch(buf[0])
-	{
-	case 'T': // print current time and timestamp
-		printCurrTime();
-		break;
-	case 'D': // print all saved measurments and clear memory
-		sendData();
-		break;
-	case 'P': // stop making new measurements
-		working_mode = 0;
-		break;
-	default:
-		return 1;
-	}
-
-	return 0;
 }

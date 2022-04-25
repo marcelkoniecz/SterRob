@@ -32,8 +32,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
-#include "operations.h"
 #include "hc4067.h"
+#include "operations.h"
+#include "parser.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,7 +46,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define RxBuff_SIZE 100
+#define RxBuff_SIZE 20
 
 /* USER CODE END PD */
 
@@ -61,6 +63,9 @@ uint8_t RxBuff[RxBuff_SIZE];
 uint8_t rx_data_size;
 uint8_t rx_command_size = 5;
 uint8_t init_ready = RESET;
+uint8_t interval_counter = 0;
+uint8_t working_mode = 1;
+uint8_t meas_interval = 1;
 
 Measurement mes;
 uint8_t f_data_ready = RESET;
@@ -77,11 +82,15 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
 {
-	  if(f_data_ready == RESET && init_ready == SET)
+	  if(f_data_ready == RESET && init_ready == SET && working_mode == 1)
 	  {
-		  readMeasurements(&hadc1, &mes);
-		  mes.time = getCurrTimestamp();
-		  f_data_ready = SET;
+		  if(++interval_counter >= meas_interval)
+		  {
+			  readMeasurements(&hadc1, &mes);
+			  mes.time = getCurrTimestamp();
+			  f_data_ready = SET;
+			  interval_counter = 0;
+		  }
 	  }
 
 }
@@ -146,7 +155,7 @@ int main(void)
 	 if (setDate(25, 04, 22, 1) != HAL_OK)
 		 Error_Handler();
 
-	 if (setTime(00,00,13) != HAL_OK)
+	 if (setTime(00,10,17) != HAL_OK)
 		 Error_Handler();
 
   /* USER CODE END 2 */

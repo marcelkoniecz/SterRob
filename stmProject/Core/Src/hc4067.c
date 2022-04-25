@@ -1,5 +1,5 @@
 #include "hc4067.h"
-#include "main.h"
+
 
 void readMultipleSensors(ADC_HandleTypeDef *hadc, uint16_t *data, uint8_t num )
 {

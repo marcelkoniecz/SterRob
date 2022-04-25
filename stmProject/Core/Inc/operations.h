@@ -15,8 +15,6 @@
 
 #define MEAS_NUM 9
 
-uint8_t working_mode = 1;
-
 //Structure with measurements
 typedef struct measurement {
 	uint32_t time;
@@ -25,9 +23,5 @@ typedef struct measurement {
 
 HAL_StatusTypeDef storeData(struct measurement mes);
 uint16_t sendData();
-
-void printCurrTime();
-uint8_t parseCommand(uint8_t *buf);
-
 
 #endif /* INC_OPERATIONS_H_ */
