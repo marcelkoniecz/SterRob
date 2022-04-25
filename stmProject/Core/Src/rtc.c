@@ -31,6 +31,7 @@ void MX_RTC_Init(void)
 {
   RTC_TimeTypeDef sTime = {0};
   RTC_DateTypeDef sDate = {0};
+  RTC_AlarmTypeDef sAlarm = {0};
 
   /** Initialize RTC Only
   */
@@ -53,7 +54,7 @@ void MX_RTC_Init(void)
 
   /** Initialize RTC and set the Time and Date
   */
-  sTime.Hours = 0;
+  sTime.Hours = 12;
   sTime.Minutes = 0;
   sTime.Seconds = 0;
   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
@@ -63,11 +64,28 @@ void MX_RTC_Init(void)
     Error_Handler();
   }
   sDate.WeekDay = RTC_WEEKDAY_MONDAY;
-  sDate.Month = RTC_MONTH_JANUARY;
-  sDate.Date = 1;
-  sDate.Year = 0;
+  sDate.Month = RTC_MONTH_APRIL;
+  sDate.Date = 25;
+  sDate.Year = 22;
 
   if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Enable the Alarm A
+  */
+  sAlarm.AlarmTime.Hours = 0;
+  sAlarm.AlarmTime.Minutes = 0;
+  sAlarm.AlarmTime.Seconds = 0;
+  sAlarm.AlarmTime.SubSeconds = 0;
+  sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  sAlarm.AlarmMask = RTC_ALARMMASK_ALL;
+  sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
+  sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+  sAlarm.AlarmDateWeekDay = 1;
+  sAlarm.Alarm = RTC_ALARM_A;
+  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
   {
     Error_Handler();
   }
@@ -84,6 +102,10 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)
   /* USER CODE END RTC_MspInit 0 */
     /* RTC clock enable */
     __HAL_RCC_RTC_ENABLE();
+
+    /* RTC interrupt Init */
+    HAL_NVIC_SetPriority(RTC_Alarm_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(RTC_Alarm_IRQn);
   /* USER CODE BEGIN RTC_MspInit 1 */
 
   /* USER CODE END RTC_MspInit 1 */
@@ -100,6 +122,9 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
   /* USER CODE END RTC_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_RTC_DISABLE();
+
+    /* RTC interrupt Deinit */
+    HAL_NVIC_DisableIRQ(RTC_Alarm_IRQn);
   /* USER CODE BEGIN RTC_MspDeInit 1 */
 
   /* USER CODE END RTC_MspDeInit 1 */
@@ -107,30 +132,47 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 }
 
 /* USER CODE BEGIN 1 */
-uint8_t setDate(int day, int month, int year, int weekDay) {
+HAL_StatusTypeDef setDate(uint8_t day, uint8_t month, uint8_t year, uint8_t weekDay) {
 	RTC_DateTypeDef Date;
 	Date.Date = day;
 	Date.Month = month;
 	Date.WeekDay = weekDay;
 	Date.Year = year;
 
-	if (HAL_RTC_SetDate(&hrtc, &Date, RTC_FORMAT_BIN) == HAL_OK)
-		return HAL_OK;
-	else
-		return HAL_ERROR;
-
+	return HAL_RTC_SetDate(&hrtc, &Date, RTC_FORMAT_BIN);
 }
-uint8_t setTime(int sec, int min, int hour) {
+HAL_StatusTypeDef setTime(uint8_t sec, uint8_t min, uint8_t hour) {
 	RTC_TimeTypeDef Time;
 	Time.Seconds = sec;
 	Time.Minutes = min;
 	Time.Hours = hour;
+	Time.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+	Time.StoreOperation = RTC_STOREOPERATION_RESET;
 
-	if (HAL_RTC_SetTime(&hrtc, &Time, RTC_FORMAT_BIN) != HAL_OK)
-		return HAL_OK;
-	else
-		return HAL_ERROR;
+	return HAL_RTC_SetTime(&hrtc, &Time, RTC_FORMAT_BIN);
+}
 
+uint32_t getCurrTimestamp()
+{
+	  RTC_TimeTypeDef currentTime;
+	  RTC_DateTypeDef currentDate;
+	  time_t timestamp;
+	  struct tm currTime;
+
+	  HAL_RTC_GetTime(&hrtc, &currentTime, RTC_FORMAT_BIN);
+	  HAL_RTC_GetDate(&hrtc, &currentDate, RTC_FORMAT_BIN);
+
+	  currTime.tm_year = currentDate.Year + 100;
+	  currTime.tm_mday = currentDate.Date;
+	  currTime.tm_mon  = currentDate.Month - 1;
+
+	  currTime.tm_hour = currentTime.Hours;
+	  currTime.tm_min  = currentTime.Minutes;
+	  currTime.tm_sec  = currentTime.Seconds;
+
+	  timestamp = mktime(&currTime);
+
+	  return (uint32_t)timestamp;
 }
 
 uint32_t RTCtoSec() {

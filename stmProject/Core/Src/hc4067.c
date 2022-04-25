@@ -32,6 +32,30 @@ void readMultipleSensors(ADC_HandleTypeDef *hadc, uint16_t *data, uint8_t num )
 	}
 }
 
+void readMeasurements(ADC_HandleTypeDef *hadc, Measurement *m)
+{
+	uint16_t i;
+
+	HAL_GPIO_WritePin(EN_GPIO_Port, EN_Pin, RESET);
+
+	for(i = 0; i < MEAS_NUM; ++i)
+	{
+		HAL_GPIO_WritePin(S0_GPIO_Port, S0_Pin, (i>>0) & 0x01);
+		HAL_GPIO_WritePin(S1_GPIO_Port, S1_Pin, (i>>1) & 0x01);
+		HAL_GPIO_WritePin(S2_GPIO_Port, S2_Pin, (i>>2) & 0x01);
+		HAL_GPIO_WritePin(S3_GPIO_Port, S3_Pin, (i>>3) & 0x01);
+
+		HAL_ADC_Start(hadc);
+
+		if (HAL_ADC_PollForConversion(hadc, 10) == HAL_OK)
+		{
+			m->meas[i] = HAL_ADC_GetValue(hadc);
+		}
+	}
+
+	HAL_GPIO_WritePin(EN_GPIO_Port, EN_Pin, SET);
+}
+
 void printData(uint16_t *data, uint8_t num)
 {
  uint8_t  i;
@@ -40,7 +64,7 @@ void printData(uint16_t *data, uint8_t num)
   for(i = 0; i < num; ++i)
     {
       p = (3.3 * data[i]) / 4095;
-   //   printf("Sensor %d: %d (%3.3f)\r\n", i, data[i],p );
+      printf("Sensor %d: %d (%3.3f)\r\n", i, data[i],p );
     }
 }
 

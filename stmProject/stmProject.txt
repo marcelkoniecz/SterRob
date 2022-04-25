@@ -1,0 +1,116 @@
+Configuration	stmProject
+STM32CubeMX 	6.5.0
+Date	04/25/2022
+MCU	STM32L476VGTx
+
+
+
+PERIPHERALS	MODES	FUNCTIONS	PINS
+ADC1	IN6 Single-ended	ADC1_IN6	PA1
+QUADSPI	Quad SPI Line	QUADSPI_BK1_IO0	PE12
+QUADSPI	Quad SPI Line	QUADSPI_BK1_IO1	PE13
+QUADSPI	Quad SPI Line	QUADSPI_BK1_IO2	PE14
+QUADSPI	Quad SPI Line	QUADSPI_BK1_IO3	PE15
+QUADSPI	Quad SPI Line	QUADSPI_NCS	PE11
+QUADSPI	Quad SPI Line	QUADSPI_CLK	PE10
+RCC	Crystal/Ceramic Resonator	RCC_OSC_IN	PH0-OSC_IN (PH0)
+RCC	Crystal/Ceramic Resonator	RCC_OSC_OUT	PH1-OSC_OUT (PH1)
+RCC	Crystal/Ceramic Resonator	RCC_OSC32_IN	PC14-OSC32_IN (PC14)
+RCC	Crystal/Ceramic Resonator	RCC_OSC32_OUT	PC15-OSC32_OUT (PC15)
+RTC	Activate RTC Clock Source	RTC_VS_RTC_Activate	VP_RTC_VS_RTC_Activate
+RTC	RTC Enabled	RTC_VS_RTC_Calendar	VP_RTC_VS_RTC_Calendar
+RTC	Internal Alarm A	RTC_VS_RTC_Alarm_A_Intern	VP_RTC_VS_RTC_Alarm_A_Intern
+SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
+TIM2	Internal Clock	TIM2_VS_ClockSourceINT	VP_TIM2_VS_ClockSourceINT
+USART2	Asynchronous	USART2_RX	PD6
+USART2	Asynchronous	USART2_TX	PD5
+
+
+
+Pin Nb	PINs	FUNCTIONs	LABELs
+8	PC14-OSC32_IN (PC14)	RCC_OSC32_IN	
+9	PC15-OSC32_OUT (PC15)	RCC_OSC32_OUT	
+12	PH0-OSC_IN (PH0)	RCC_OSC_IN	
+13	PH1-OSC_OUT (PH1)	RCC_OSC_OUT	
+23	PA0	GPIO_Output	S0
+24	PA1	ADC1_IN6	SIG
+30	PA5	GPIO_Output	S1
+39	PE8	GPIO_Output	EN
+41	PE10	QUADSPI_CLK	
+42	PE11	QUADSPI_NCS	
+43	PE12	QUADSPI_BK1_IO0	
+44	PE13	QUADSPI_BK1_IO1	
+45	PE14	QUADSPI_BK1_IO2	
+46	PE15	QUADSPI_BK1_IO3	
+86	PD5	USART2_TX	
+87	PD6	USART2_RX	
+92	PB6	GPIO_Output	S2
+93	PB7	GPIO_Output	S3
+PERIPHERALS	MODES	FUNCTIONS	PINS
+ADC1	IN6 Single-ended	ADC1_IN6	PA1
+QUADSPI	Quad SPI Line	QUADSPI_BK1_IO0	PE12
+QUADSPI	Quad SPI Line	QUADSPI_BK1_IO1	PE13
+QUADSPI	Quad SPI Line	QUADSPI_BK1_IO2	PE14
+QUADSPI	Quad SPI Line	QUADSPI_BK1_IO3	PE15
+QUADSPI	Quad SPI Line	QUADSPI_NCS	PE11
+QUADSPI	Quad SPI Line	QUADSPI_CLK	PE10
+RCC	Crystal/Ceramic Resonator	RCC_OSC_IN	PH0-OSC_IN (PH0)
+RCC	Crystal/Ceramic Resonator	RCC_OSC_OUT	PH1-OSC_OUT (PH1)
+RCC	Crystal/Ceramic Resonator	RCC_OSC32_IN	PC14-OSC32_IN (PC14)
+RCC	Crystal/Ceramic Resonator	RCC_OSC32_OUT	PC15-OSC32_OUT (PC15)
+RTC	Activate RTC Clock Source	RTC_VS_RTC_Activate	VP_RTC_VS_RTC_Activate
+RTC	RTC Enabled	RTC_VS_RTC_Calendar	VP_RTC_VS_RTC_Calendar
+RTC	Internal Alarm A	RTC_VS_RTC_Alarm_A_Intern	VP_RTC_VS_RTC_Alarm_A_Intern
+SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
+TIM2	Internal Clock	TIM2_VS_ClockSourceINT	VP_TIM2_VS_ClockSourceINT
+USART2	Asynchronous	USART2_RX	PD6
+USART2	Asynchronous	USART2_TX	PD5
+
+
+
+Pin Nb	PINs	FUNCTIONs	LABELs
+8	PC14-OSC32_IN (PC14)	RCC_OSC32_IN	
+9	PC15-OSC32_OUT (PC15)	RCC_OSC32_OUT	
+12	PH0-OSC_IN (PH0)	RCC_OSC_IN	
+13	PH1-OSC_OUT (PH1)	RCC_OSC_OUT	
+23	PA0	GPIO_Output	S0
+24	PA1	ADC1_IN6	SIG
+30	PA5	GPIO_Output	S1
+39	PE8	GPIO_Output	EN
+41	PE10	QUADSPI_CLK	
+42	PE11	QUADSPI_NCS	
+43	PE12	QUADSPI_BK1_IO0	
+44	PE13	QUADSPI_BK1_IO1	
+45	PE14	QUADSPI_BK1_IO2	
+46	PE15	QUADSPI_BK1_IO3	
+86	PD5	USART2_TX	
+87	PD6	USART2_RX	
+92	PB6	GPIO_Output	S2
+93	PB7	GPIO_Output	S3
+
+
+
+SOFTWARE PROJECT
+
+Project Settings : 
+Project Name : stmProject
+Project Folder : M:\STUDIA\Semestr6\Sterowniki_robotow\Projekt\SterRob\stmProject
+Toolchain / IDE : STM32CubeIDE
+Firmware Package Name and Version : STM32Cube FW_L4 V1.16.0
+
+
+Code Generation Settings : 
+STM32Cube MCU packages and embedded software packs : Copy only the necessary library files
+Generate peripheral initialization as a pair of '.c/.h' files per peripheral : Yes
+Backup previously generated files when re-generating : No
+Delete previously generated files when not re-generated : Yes
+Set all free pins as analog (to optimize the power consumption) : No
+
+
+Toolchains Settings : 
+Compiler Optimizations : 
+
+
+
+
+

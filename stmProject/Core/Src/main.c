@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "quadspi.h"
 #include "rtc.h"
 #include "tim.h"
@@ -42,6 +43,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+#define RxBuff_SIZE 100
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,6 +57,14 @@
 
 /* USER CODE BEGIN PV */
 
+uint8_t RxBuff[RxBuff_SIZE];
+uint8_t rx_data_size;
+uint8_t rx_command_size = 5;
+uint8_t init_ready = RESET;
+
+Measurement mes;
+uint8_t f_data_ready = RESET;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,19 +75,22 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-time_t czas;
-//struct tm ptr;
+void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
+{
+	  if(f_data_ready == RESET && init_ready == SET)
+	  {
+		  readMeasurements(&hadc1, &mes);
+		  mes.time = getCurrTimestamp();
+		  f_data_ready = SET;
+	  }
 
+}
 
-//time(&ptr);
-//ptr.tm_sec=40;
-
-uint32_t buf = 1000000;
-uint16_t readbuf[2];
-int a = 10;
-
-RTC_TimeTypeDef Time;
-RTC_DateTypeDef Date;
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	parseCommand(RxBuff);
+	HAL_UART_Receive_DMA(&huart2, RxBuff, rx_command_size);
+}
 
 /* USER CODE END 0 */
 
@@ -110,12 +125,14 @@ int main(void)
   MX_QUADSPI_Init();
   MX_ADC1_Init();
   MX_RTC_Init();
-  MX_TIM2_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
-  MX_TIM3_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
+
 	 //Inicjalizacja
+
 	 if (CSP_QUADSPI_Init() != HAL_OK) {
 	 Error_Handler();
 	 }
@@ -124,48 +141,26 @@ int main(void)
 	 Error_Handler();
 	 }
 
+
 	 //Ustawienie daty i godziny
-	 if (setDate(14, 04, 22, 3))
-	 Error_Handler();
-	 if (setTime(0, 33, 17))
-	 Error_Handler();
-	// uint32_t sec=RTCtoSec();
+	 if (setDate(25, 04, 22, 1) != HAL_OK)
+		 Error_Handler();
 
-	/* if (CSP_QSPI_Write(&buf, 0, sizeof(buf)) != HAL_OK) {
-	 Error_Handler();
-	}
-
-	 if (CSP_QSPI_Read(&readbuf, 0, 4) != HAL_OK) {
-	 Error_Handler();
-	 }*/
-
-	 /**
-	//Testy zapisow i odczytow do pamieci
-
-	int n=1000;
-	struct measurement mes[n];
-	for(int i=0;i<n;i++){
-	mes[i].time = 10000000+i;
-	mes[i].meas[0] = 1+i;
-	mes[i].meas[1] = 8+i;
-	mes[i].meas[2] = 4+i;
-	mes[i].meas[3] = 1+i;
-	mes[i].meas[4] = 5+i;
-	mes[i].meas[5] = 14+i;
-	mes[i].meas[6] = 18+i;
-	mes[i].meas[7] = 12+i;
-	mes[i].meas[8] = 11+i;
-	storeData(mes[i]);
-	}
-	sendData();
-	**/
+	 if (setTime(00,00,13) != HAL_OK)
+		 Error_Handler();
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	HAL_UART_Receive_DMA(&huart2, RxBuff, rx_command_size);
+	init_ready = SET;
 	while (1) {
-
+		if(f_data_ready == SET)
+		{
+			storeData(mes);
+			f_data_ready = RESET;
+		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -245,18 +240,6 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-// Callback: timer has rolled over
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  // Check which version of the timer triggered this callback and toggle LED
-uint16_t data[9];
-  if (htim == &htim3)
-  {
-	  readMultipleSensors(&hadc1, data, 9);
-	  printData(data,9);
-  }
-}
-
 /* USER CODE END 4 */
 
 /**
@@ -267,7 +250,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
-	int a = 10;
+	printf("ERROR\r\n");
   /* USER CODE END Error_Handler_Debug */
 }
 

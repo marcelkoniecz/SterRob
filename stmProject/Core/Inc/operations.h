@@ -8,18 +8,24 @@
 #ifndef INC_OPERATIONS_H_
 #define INC_OPERATIONS_H_
 #include "main.h"
+#include "rtc.h"
 
 #define FLASH_SIZE_HERE 0x00100000
 
+#define MEAS_NUM 9
+
 //Structure with measurements
-struct measurement {
+typedef struct measurement {
 	uint32_t time;
-	uint16_t meas[9];
-};
+	uint16_t meas[MEAS_NUM];
+} Measurement;
 
 
 HAL_StatusTypeDef storeData(struct measurement mes);
 uint16_t sendData();
+
+void printCurrTime();
+uint8_t parseCommand(uint8_t *buf);
 
 
 #endif /* INC_OPERATIONS_H_ */

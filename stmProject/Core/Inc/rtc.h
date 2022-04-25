@@ -27,7 +27,7 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#include <time.h>
 /* USER CODE END Includes */
 
 extern RTC_HandleTypeDef hrtc;
@@ -39,8 +39,9 @@ extern RTC_HandleTypeDef hrtc;
 void MX_RTC_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-uint8_t setDate(int day,int month,int year,int weekDay);
-uint8_t setTime(int sec,int min,int hour);
+HAL_StatusTypeDef setDate(uint8_t day, uint8_t month, uint8_t year, uint8_t weekDay);
+HAL_StatusTypeDef setTime(uint8_t sec, uint8_t min, uint8_t hour);
+uint32_t getCurrTimestamp();
 uint32_t RTCtoSec();
 uint32_t monthToSec(uint8_t month, uint8_t year);
 /* USER CODE END Prototypes */

@@ -10,10 +10,11 @@
 
 #include "stm32l4xx_hal.h"
 #include <time.h>
-
-//int _write(int file, uint8_t *ptr, uint16_t len);
+#include "operations.h"
 
 void readMultipleSensors(ADC_HandleTypeDef  *hadc, uint16_t *data, uint8_t num );
+
+void readMeasurements(ADC_HandleTypeDef *hadc, Measurement *m);
 
 void printData(uint16_t *data, uint8_t num);
 
