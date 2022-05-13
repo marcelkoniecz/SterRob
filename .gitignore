@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#Python
+serverProject/.idea
+serverProject/__pycache__

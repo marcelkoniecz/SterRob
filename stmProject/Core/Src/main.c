@@ -155,7 +155,7 @@ int main(void)
 	 if (setDate(25, 04, 22, 1) != HAL_OK)
 		 Error_Handler();
 
-	 if (setTime(00,10,17) != HAL_OK)
+	 if (setTime(00,32,17) != HAL_OK)
 		 Error_Handler();
 
   /* USER CODE END 2 */
