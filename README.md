@@ -1,2 +1,3 @@
 # SterRob
-Projekt matrycy fotorezystorów 
+Projekt loggera danych, logger zapisuje oraz wysyła wartości zmierzone na matrycy fotorezystorów
+Autorzy: kuchnast, marcelkoniecz
