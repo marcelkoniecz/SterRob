@@ -55,6 +55,7 @@ dkms.conf
 serverProject/.idea
 serverProject/__pycache__
 serverProject/venv/
+serverProject/database/*
 
 #STMIde
 stmProject/Debug

@@ -66,6 +66,9 @@ uint8_t MainBuf[MainBuf_SIZE];
 uint8_t size = 0;
 
 uint8_t init_ready = RESET;
+
+Command com;
+
 uint8_t interval_counter = 0;
 uint8_t working_mode = 1;
 uint8_t meas_interval = 1;

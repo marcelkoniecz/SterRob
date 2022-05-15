@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for
-
-# import serial
+import serial
 
 # port = "/dev/ttyACM1"
 # ser=serial.Serial(port,115200)
