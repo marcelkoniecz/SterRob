@@ -31,6 +31,7 @@
 /* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include "hc4067.h"
 #include "operations.h"
@@ -46,7 +47,8 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define RxBuff_SIZE 20
+#define RxBuf_SIZE 50
+#define MainBuf_SIZE 50
 
 /* USER CODE END PD */
 
@@ -59,9 +61,10 @@
 
 /* USER CODE BEGIN PV */
 
-uint8_t RxBuff[RxBuff_SIZE];
-uint8_t rx_data_size;
-uint8_t rx_command_size = 5;
+uint8_t RxBuf[RxBuf_SIZE];
+uint8_t MainBuf[MainBuf_SIZE];
+uint8_t size = 0;
+
 uint8_t init_ready = RESET;
 uint8_t interval_counter = 0;
 uint8_t working_mode = 1;
@@ -97,10 +100,46 @@ void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	parseCommand(RxBuff);
-	HAL_UART_Receive_DMA(&huart2, RxBuff, rx_command_size);
-}
+	if (huart->Instance == USART2)
+	{
+		if(size == 0)
+		{
+			size = atoi((char *)RxBuf);
 
+			if(size > 0 && size <= RxBuf_SIZE)
+			{
+				__HAL_UART_CLEAR_OREFLAG(&huart2);
+				HAL_UART_Receive_DMA(&huart2, RxBuf, size);
+				printf("OK\r\n");
+			}
+			else
+			{
+				printf("ERROR\r\n");
+				HAL_UART_Receive_DMA(&huart2, RxBuf, 2);
+			}
+		}
+		else
+		{
+			if(size >= 2)
+			{
+				if(RxBuf[size - 1] == '\n' && RxBuf[size - 2] == '\r')
+				{
+					printf("OK\r\n");
+					parseCommand(RxBuf);
+				}
+				else
+				{
+					printf("ERROR\r\n");
+				}
+			}
+
+			size = 0;
+			HAL_UART_Receive_DMA(&huart2, RxBuf, 2);
+		}
+
+
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -146,10 +185,11 @@ int main(void)
 	 Error_Handler();
 	 }
 
+	 /**
 	 if (CSP_QSPI_Erase_Chip() != HAL_OK) {
 	 Error_Handler();
 	 }
-
+	 **/
 
 	 //Ustawienie daty i godziny
 	 if (setDate(25, 04, 22, 1) != HAL_OK)
@@ -162,7 +202,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	HAL_UART_Receive_DMA(&huart2, RxBuff, rx_command_size);
+	HAL_UART_Receive_DMA(&huart2, RxBuf, 2);
 	init_ready = SET;
 	while (1) {
 		if(f_data_ready == SET)

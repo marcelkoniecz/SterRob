@@ -1,4 +1,5 @@
 from flask import Flask
+import serial
 
 app = Flask(__name__)
 

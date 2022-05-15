@@ -54,3 +54,6 @@ dkms.conf
 #Python
 serverProject/.idea
 serverProject/__pycache__
+
+#STMIde
+stmProject/Debug
