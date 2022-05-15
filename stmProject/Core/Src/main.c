@@ -86,6 +86,56 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+HAL_StatusTypeDef runCommand(Command com)
+{
+	switch(com.id)
+	{
+	case GET_TIME: // print current time
+	{
+		printf("%lu\n", getCurrTimestamp());
+		break;
+	}
+	case SET_TIME: // set current time
+	{
+		time_t new_time = (time_t)com.data;
+		struct tm *t;
+		t = localtime (&new_time);
+
+		setDate(t->tm_mday, t->tm_mon + 1, t->tm_year - 100, t->tm_wday + 1);
+		setTime(t->tm_sec, t->tm_min, t->tm_hour);
+		printf("OK\n");
+
+		break;
+	}
+	case GET_ALL_MEAS: // print all saved measurments and clear memory
+	{
+		break;
+	}
+	case WORK_MOD_ON: // stop making new measurements
+	{
+		working_mode = 0;
+		break;
+
+	}
+	case WORK_MOD_OFF: // start making new measurements
+	{
+		working_mode = 1;
+		break;
+	}
+	case CHANGE_INT: // change interval between measurements
+	{
+		if(com.data > 0)
+			meas_interval = com.data;
+		else
+			return HAL_ERROR;
+		break;
+	}
+	default:
+		return HAL_ERROR;
+	}
+	return HAL_OK;
+}
+
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
 {
 	  if(f_data_ready == RESET && init_ready == SET && working_mode == 1)
@@ -113,36 +163,36 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			{
 				__HAL_UART_CLEAR_OREFLAG(&huart2);
 				HAL_UART_Receive_DMA(&huart2, RxBuf, size);
-				printf("OK\r\n");
+				printf("OK\n");
 			}
 			else
 			{
-				printf("ERROR\r\n");
+				printf("ERROR\n");
 				HAL_UART_Receive_DMA(&huart2, RxBuf, 2);
 			}
 		}
 		else
 		{
-			if(size >= 2)
+			if(ParseData(RxBuf, size) == HAL_OK)
 			{
-				if(RxBuf[size - 1] == '\n' && RxBuf[size - 2] == '\r')
+				printf("OK\n");
+				if(runCommand(com) != HAL_OK)
 				{
-					printf("OK\r\n");
-					parseCommand(RxBuf);
+					printf("ERROR\n");
 				}
-				else
-				{
-					printf("ERROR\r\n");
-				}
+			}
+			else
+			{
+				printf("ERROR\n");
 			}
 
 			size = 0;
 			HAL_UART_Receive_DMA(&huart2, RxBuf, 2);
 		}
-
-
 	}
 }
+
+
 /* USER CODE END 0 */
 
 /**
