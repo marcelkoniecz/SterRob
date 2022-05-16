@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Logger danych</title>
+    <style>
+        p.big {
+            font-size: 50px;
+        }
+        p.medium{
+            font-size:24px;
+        }
+
+        .button {
+
+            background-color: darkgray;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            font-size: 30px;
+            width: 100px;
+            height: 50px;
+            margin-left: 10px;
+        }
+
+        input.wpr {
+            width: 150px;
+            height: 30px;
+            font-size: 20px;
+        }
+    </style>
+    <!--<div class="center">-->
+    <center>
+        <p class="big">Opcje</p>
+    </center>
+
+    <!--</div>-->
+</head>
+
+<body>
+    <center>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type=text/javascript>
+            $(function() {
+              $('a#test').on('click', function(e) {
+                e.preventDefault()
+                $.getJSON('/background_process_test',
+                    function(data) {
+                  //do nothing
+                });
+                return false;
+              });
+            });
+        </script>
+
+
+//button
+<div class='container'>
+    <h3>Test</h3>
+        <form>
+            <a href=# id=test><button class='btn btn-default'>Test</button></a>
+        </form>
+
+</div>
+
+        <form action="#" method="post">
+            <input class="wpr" type="text" name="wartosc" minlength="1" maxlength="30">
+            <button class="button"> Send</button>
+        </form>
+        {%if printTime %}
+         <p class="medium">Actual Time : {{time}}</p>
+        {%endif%}
+        {%if a%}
+         <p class="medium">Data set: {{date}}</p>
+        {%endif%}
+        {%if error%}
+         <p class="medium">{{errorMess}}</p>
+        {%endif%}
+    </center>
+</body>
+
+</html>

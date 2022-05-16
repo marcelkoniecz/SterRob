@@ -2,13 +2,40 @@ import sqlite3
 import os
 
 
+DATABASE_PATH = "database/sensors_data.db"
+
+SENSORS_LIST = [
+    (1, "Sensor [0,0]"),
+    (2, "Sensor [0,1]"),
+    (3, "Sensor [0,2]"),
+    (4, "Sensor [1,0]"),
+    (5, "Sensor [1,1]"),
+    (6, "Sensor [1,2]"),
+    (7, "Sensor [2,0]"),
+    (8, "Sensor [2,1]"),
+    (9, "Sensor [2,2]"),
+]
+
+
+def connect_database():
+    try:
+        return sqlite3.connect('file:' + DATABASE_PATH + '?mode=rwc', uri=True)
+    except Exception as e:
+        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+        message = template.format(type(e).__name__, e.args)
+        print(message)
+        raise
+
+
 def create_database():
-    if os.path.isfile("database/sensors_data.db"):
+    if os.path.isfile(DATABASE_PATH):
         print("Database already exists!")
         return True
     else:
         try:
-            con = sqlite3.connect('file:database/sensors_data.db?mode=rwc', uri=True)
+            if not os.path.isdir("database"):
+                os.mkdir("database")
+            con = connect_database()
             cur = con.cursor()
 
             # Create tables
@@ -29,6 +56,8 @@ def create_database():
             FOREIGN KEY(id_measurement) REFERENCES measurements(id),
             FOREIGN KEY(id_sensor)      REFERENCES sensors(id)
             )''')
+
+            cur.executemany('''INSERT INTO sensors(id, description) VALUES (?, ?)''', SENSORS_LIST)
 
             con.commit()
             con.close()

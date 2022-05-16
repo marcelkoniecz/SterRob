@@ -22,6 +22,6 @@ typedef struct measurement {
 } Measurement;
 
 HAL_StatusTypeDef storeData(struct measurement mes);
-uint16_t sendData();
+HAL_StatusTypeDef sendData();
 
 #endif /* INC_OPERATIONS_H_ */

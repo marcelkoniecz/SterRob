@@ -61,14 +61,11 @@ def glowna():
             return render_template('index.html', error=1, errorMess="Write a command")
     else:
         return render_template('index.html')
-####
-#
-#
+
 
 @app.route("/revdata")
-def recivedData():
-
-  return render_template('recivedData.html')
+def received_data():
+    return render_template('receivedData.html')
 # return "<p>Hello, World!</p>"
 # return "<p>Hello, World!</p>"
 

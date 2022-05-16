@@ -33,33 +33,39 @@ HAL_StatusTypeDef storeData(struct measurement mes) {
 	return HAL_OK;
 }
 
-uint16_t sendData() {
+HAL_StatusTypeDef sendData() {
 	uint16_t dataNum = 0;
 	uint32_t tmpCurAddr = curAddr;
 	uint16_t readData[11];
 	uint32_t timestamp;
 
 	if (curAddr < 18)
-		return dataNum;
+		return HAL_ERROR;
 
 	for (int i = 0; i < (tmpCurAddr / 22); i++) \
 	{
 		if (CSP_QSPI_Read(&readData, dataNum * 22, 22) != HAL_OK)
+		{
 			Error_Handler();
+			return HAL_ERROR;
+		}
+
 		dataNum++;
 		curAddr -= 22;
 		timestamp = (readData[1] << 16) | readData[0];
-		printf("%d. %lu ", i, timestamp);
+		printf("%lu\n", i, timestamp);
 
 		for (int j = 2; j < 11; j++)
 		{
-			printf("%d ", readData[j]);
+			printf("%d\n", readData[j]);
 		}
-		printf("\n\r");
 	}
 
 	if(CSP_QSPI_EraseSector(0, tmpCurAddr) != HAL_OK)
+	{
 		Error_Handler();
+		return HAL_ERROR;
+	}
 
-	return dataNum;
+	return HAL_OK;
 }

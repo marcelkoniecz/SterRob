@@ -109,6 +109,10 @@ HAL_StatusTypeDef runCommand(Command com)
 	}
 	case GET_ALL_MEAS: // print all saved measurments and clear memory
 	{
+		if(sendData() == HAL_OK)
+			printf("OK\n");
+		else
+			printf("ERROR\n");
 		break;
 	}
 	case WORK_MOD_ON: // stop making new measurements
@@ -241,11 +245,10 @@ int main(void)
 	 Error_Handler();
 	 }
 
-	 /**
 	 if (CSP_QSPI_Erase_Chip() != HAL_OK) {
 	 Error_Handler();
 	 }
-	 **/
+
 
 	 //Ustawienie daty i godziny
 	 if (setDate(25, 04, 22, 1) != HAL_OK)
