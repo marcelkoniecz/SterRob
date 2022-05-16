@@ -37,6 +37,9 @@ def glowna():
             return render_template('index.html',error=1,errorMess="Write a command")
     else:
         return render_template('index.html')
+####
+#
+#
 
 @app.route("/revdata")
 def recivedData():
