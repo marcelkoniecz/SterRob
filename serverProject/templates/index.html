@@ -1,38 +1,56 @@
 <!DOCTYPE html>
+
 <head>
-<title>Logger danych </title>
-<style>
-    p.big{
-        font-size: 50px;
-    }
-    .button{
-       
-        background-color: darkgray;
-        font-family:'Courier New', Courier, monospace;
-        text-align: center;
-        font-size: 30px; 
-        width:100px;
-        height:50px;
-        margin-left:10px ;
-    }
-    input.wpr{
-        width: 150px;
-        height: 30px;
-        font-size: 20px;
-    }   
+    <title>Logger danych </title>
+    <style>
+        p.big {
+            font-size: 50px;
+        }
+        p.medium{
+            font-size:24px;
+        }
 
-</style>
-<!--<div class="center">-->
-<center><p class="big"> Strona logger danych</p> </center>
+        .button {
 
-<!--</div>-->
+            background-color: darkgray;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            font-size: 30px;
+            width: 100px;
+            height: 50px;
+            margin-left: 10px;
+        }
+
+        input.wpr {
+            width: 150px;
+            height: 30px;
+            font-size: 20px;
+        }
+    </style>
+    <!--<div class="center">-->
+    <center>
+        <p class="big"> Strona logger danych</p>
+    </center>
+
+    <!--</div>-->
 </head>
+
 <body>
     <center>
         <form action="#" method="post">
-    <input class="wpr" type="text" name="wrt" minlength="5" maxlength="5"> 
-    <button class="button"> Send</button> 
-</form>
-</center>
+            <input class="wpr" type="text" name="wartosc" minlength="1" maxlength="30">
+            <button class="button"> Send</button>
+        </form>
+        {%if printTime %}
+         <p class="medium">Actual Time : {{time}}</p>
+        {%endif%}
+        {%if a%}
+         <p class="medium">Data set: {{date}}</p>
+        {%endif%}
+        {%if error%}
+         <p class="medium">{{errorMess}}</p>
+        {%endif%}
+    </center>
 </body>
+
 </html>

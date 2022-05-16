@@ -54,8 +54,9 @@ dkms.conf
 #Python
 serverProject/.idea
 serverProject/__pycache__
-serverProject/venv/
-serverProject/database/*
+serverProject/venv
+serverProject/database/*.db
+serverProject/.venv
 
 #STMIde
 stmProject/Debug
