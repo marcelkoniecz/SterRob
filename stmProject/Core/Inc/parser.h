@@ -7,15 +7,8 @@
 #define COMMAND_MAX_SIZE 20
 #define COMMAND_NUM 6
 
-static const uint8_t commands[COMMAND_NUM][COMMAND_MAX_SIZE] =
-{
-		{"GET_TIME"},
-		{"SET_TIME"},
-		{"GET_ALL_MEAS"},
-		{"WORK_MOD_ON"},
-		{"WORK_MOD_OFF"},
-		{"CHANGE_INT"}
-};
+extern uint8_t working_mode;
+extern uint8_t meas_interval;
 
 typedef enum command_list
 {
@@ -33,8 +26,7 @@ typedef struct command_struct
 	uint32_t data;
 } Command;
 
-extern Command com;
-
-HAL_StatusTypeDef ParseData(uint8_t *data, uint8_t size);
+void printCurrTime();
+uint8_t parseCommand(uint8_t *buf);
 
 #endif /* INC_PARSER_H_ */
