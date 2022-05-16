@@ -167,8 +167,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			}
 			else
 			{
-				printf("ERROR\n");
 				HAL_UART_Receive_DMA(&huart2, RxBuf, 2);
+				printf("ERROR\n");
 			}
 		}
 		else
