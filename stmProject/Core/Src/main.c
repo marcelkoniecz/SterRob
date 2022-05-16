@@ -125,7 +125,10 @@ HAL_StatusTypeDef runCommand(Command com)
 	case CHANGE_INT: // change interval between measurements
 	{
 		if(com.data > 0)
+		{
 			meas_interval = com.data;
+			printf("OK\n");
+		}
 		else
 			return HAL_ERROR;
 		break;

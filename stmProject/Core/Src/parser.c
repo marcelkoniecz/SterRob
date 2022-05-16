@@ -59,7 +59,7 @@ HAL_StatusTypeDef ParseData(uint8_t *data, uint8_t size)
 	{
 		if(data[i] == '\n')
 		{
-			return ParseCommand(data, 0, i - 1);
+			return ParseCommand(data, 0, i);
 		}
 	}
 

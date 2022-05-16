@@ -14,7 +14,7 @@ def get_stm_port():
     return -1
 
 
-def open_serial(port, baudrate = 115200, timeout = 2.0) -> serial:
+def open_serial(port, baudrate = 115200, timeout = 10.0) -> serial:
     try:
         ser = serial.Serial()
         ser.port = port
@@ -27,25 +27,40 @@ def open_serial(port, baudrate = 115200, timeout = 2.0) -> serial:
     return ser
 
 
-def serial_transmit(ser: serial, buf: str):
-    if buf[-1] != "\n":
-        buf += "\n"
-    str_buf_len = str(len(buf))
-    if len(str_buf_len) == 1:
-        str_buf_len = '0' + str_buf_len
-    elif len(str_buf_len) > 2:
-        return bytearray()
+def serial_transmit(ser: serial, buf: str) -> str:
+    try:
+        if buf[-1] != "\n":
+            buf += "\n"
+        str_buf_len = str(len(buf))
+        if len(str_buf_len) == 1:
+            str_buf_len = '0' + str_buf_len
+        elif len(str_buf_len) > 2:
+            return bytearray()
 
-    if ser.is_open:
-        ser.write(str_buf_len.encode())
-        b_read = ser.read_until()
-        if b_read == SERIAL_OK:
-            ser.write(buf.encode())
+        if ser.is_open:
+            ser.write(str_buf_len.encode())
             b_read = ser.read_until()
             if b_read == SERIAL_OK:
-                return ser.read_until()
+                ser.write(buf.encode())
+                b_read = ser.read_until()
+                if b_read == SERIAL_OK:
+                    return SERIAL_OK
+    except Exception as e:
+        print("Connection error: ", e.__class__)
+    return SERIAL_ERROR
+
+
+def serial_receive(ser: serial) -> bytearray:
+    try:
+        if ser.is_open:
+            return ser.read_until()
+    except Exception as e:
+        print("Connection error: ", e.__class__)
     return bytearray()
 
 
-s = open_serial(get_stm_port())
-serial_transmit(s, "GET_TIME")
+if __name__ == "__main__":
+    s = open_serial(get_stm_port())
+    print(serial_transmit(s, "GET_TIME"))
+    print(serial_transmit(s, "SET_TIME1650900000"))
+    print(serial_transmit(s, "GET_TIME"))
