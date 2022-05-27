@@ -26,6 +26,10 @@ def insert_measurement(m: Measurement):
     con.commit()
     con.close()
 
+def clear_database():
+    con = db.connect_database()
+    con.commit()
+    con.close()
 
 if __name__ == "__main__":
     db.create_database()

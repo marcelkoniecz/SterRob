@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Logger danych</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Datepicker - Display inline</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+            p
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="header">
+        <a href="#default" class="logo">Projekt loggera danych</a>
+        <div class="header-right">
+            <a href="/">Zarządzanie danymi</a>
+            <a class="active" href="#contact">Konfiguracja</a>
+            <!--<a href="#about">About</a>-->
+        </div>
+    </div>
+
+    <input class="wpr" type="text" color="black" disabled="true" value="{{message}}">
+
+    <p class="pdata">Ustaw date</p>
+    <p class="pczas">Ustaw czas</p>
+    <form action="#" method="post">
+
+        <input class="date" type="text" id="datepicker" name="kalendarz"></input>
+        <input class="time" type="time" id="appt" name="czas" min="00:00" max="24:00" required>
+        <div class="btn-group2" ,style="width:75%">
+            <input style="width:25%" type="submit" name="submit_button" value="Ustaw wybrany czas"></input>
+    </form>
+
+    <form action="#" method="post">
+        <input style="width:25%" type="submit" name="submit_button" value="Odczytaj aktualny czas"></input>
+        </div>
+        <div class="btn-group2" ,style="width:75%">
+            <input style="width:25%" type="submit" name="submit_button" value="Wznów prace loggera"></input>
+            <input style="width:25%" type="submit" name="submit_button" value="Zatrzymaj logger"></input>
+        </div>
+    </form>
+
+    <!--
+    <div class="btn-group" ,style="width:75%">
+        <button style="width:25%">Pobierz</button>
+        <button style="width:25%">Wyczyść</button>
+        <button style="width:25%">Widok</button>
+    </div>
+     <div class="navbar">
+        <a class="active" href="#">Pobierz</a>
+        <a href="#">Wyczyść</a>
+        <a href="#">Widok</a>
+    </div>-->
+</body>
+
+</html>
