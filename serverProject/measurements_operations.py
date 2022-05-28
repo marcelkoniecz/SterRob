@@ -68,7 +68,7 @@ def print_measurements(meas_list: list):
 if __name__ == "__main__":
     db.create_database()
 
-    m = Measurement(165000000, list(range(1, 10)))
+    m = Measurement(165000001, list(range(1, 10)))
 
     # db.clear_database("measurements")
     # db.clear_database("measurements_sensors_data")
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     print("BEFORE\n")
     print("measurements")
     # db.print_database("measurements")
-    list_of_meas = get_measurements()
+    list_of_meas = get_measurements(10)
     if list_of_meas is None:
         print("EMPTY")
     else:
@@ -86,6 +86,8 @@ if __name__ == "__main__":
 
     insert_measurement(m)
 
+
+
     print("AFTER\n")
     print("measurements")
     list_of_meas = get_measurements()
@@ -93,6 +95,12 @@ if __name__ == "__main__":
         print("EMPTY")
     else:
         print_measurements(list_of_meas)
+
+    for m in list_of_meas:
+        print( m[0])
+        for n in range(0,8):
+            print(m[1][n])
+
     # db.print_database("measurements")
     # print("measurements_sensors_data")
     # db.print_database("measurements_sensors_data")

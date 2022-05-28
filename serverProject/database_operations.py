@@ -80,6 +80,7 @@ def clear_database(name: str):
     con.close()
 
 
+
 def print_database(name: str):
     con = connect_database()
     cur = con.cursor()

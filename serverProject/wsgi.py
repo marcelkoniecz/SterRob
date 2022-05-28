@@ -5,7 +5,7 @@ import datetime
 from flask_bootstrap import Bootstrap
 from flask_datepicker import datepicker
 
-import serial_port as sp
+#import serial_port as sp
 
 import measurements_operations as mo
 import database_operations as do
@@ -23,59 +23,72 @@ app = Flask(__name__)
 Bootstrap(app)
 datepicker(app)
 
+
 # @app.route("/")
 # def home()
 
-@app.route("/home", methods=["POST", "GET"])
-def glowna():
-    if request.method == "POST":
-        zmienna = request.form["wartosc"]
-        if len(zmienna) > 0:
-            if zmienna[0] == 't':
+# @app.route("/home", methods=["POST", "GET"])
+# def glowna():
+#     if request.method == "POST":
+#         zmienna = request.form["wartosc"]
+#         if len(zmienna) > 0:
+#             if zmienna[0] == 't':
 
-                if sp.serial_transmit(ser, "GET_TIME") != sp.SERIAL_OK:
-                    return render_template('index.html', error=1, errorMess="Command parse error!")
-                data = sp.serial_receive(ser)
-                if len(data) == 0:
-                    return render_template('index.html', error=1, errorMess="No data received!")
-                timestamp = int(data.decode("utf-8"))
-                print(timestamp)
-                date_time = datetime.fromtimestamp(timestamp)
-                return render_template('index.html', printTime=1, time=date_time.strftime("%d/%m/%Y, %H:%M:%S"))
-            elif zmienna[0] == 'd':
-                try:
-                    timestamp = int(zmienna[1:len(zmienna)])
-                    if timestamp > 2147483647:
-                        return render_template('index.html',error=1,errorMess="Max value is 2147483647")
+#                 if sp.serial_transmit(ser, "GET_TIME") != sp.SERIAL_OK:
+#                     return render_template('index.html', error=1, errorMess="Command parse error!")
+#                 data = sp.serial_receive(ser)
+#                 if len(data) == 0:
+#                     return render_template('index.html', error=1, errorMess="No data received!")
+#                 timestamp = int(data.decode("utf-8"))
+#                 print(timestamp)
+#                 date_time = datetime.fromtimestamp(timestamp)
+#                 return render_template('index.html', printTime=1, time=date_time.strftime("%d/%m/%Y, %H:%M:%S"))
+#             elif zmienna[0] == 'd':
+#                 try:
+#                     timestamp = int(zmienna[1:len(zmienna)])
+#                     if timestamp > 2147483647:
+#                         return render_template('index.html',error=1,errorMess="Max value is 2147483647")
 
-                    mess = "SET_TIME" + str(timestamp)
-                    if sp.serial_transmit(ser, mess) != sp.SERIAL_OK:
-                        return render_template('index.html', error=1, errorMess="Command parse error!")
+#                     mess = "SET_TIME" + str(timestamp)
+#                     if sp.serial_transmit(ser, mess) != sp.SERIAL_OK:
+#                         return render_template('index.html', error=1, errorMess="Command parse error!")
 
-                    sa = sp.serial_receive(ser)
-                    print(sa)
-                    if sa == sp.SERIAL_OK:
-                        date_time = datetime.fromtimestamp(timestamp)
-                        res = "Date and time set to " + date_time.strftime("%d/%m/%Y, %H:%M:%S")
-                        return render_template("index.html", a=1, date=res)
+#                     sa = sp.serial_receive(ser)
+#                     print(sa)
+#                     if sa == sp.SERIAL_OK:
+#                         date_time = datetime.fromtimestamp(timestamp)
+#                         res = "Date and time set to " + date_time.strftime("%d/%m/%Y, %H:%M:%S")
+#                         return render_template("index.html", a=1, date=res)
 
-                    return render_template('index.html', error=1, errorMess="Can't set new timestamp")
+#                     return render_template('index.html', error=1, errorMess="Can't set new timestamp")
 
-                except:
-                    return render_template('index.html', error=1, errorMess="Date command - d<value>")
-            else:
-                return render_template('index.html', error=1, errorMess="Wrong command")
-        else:
-            return render_template('index.html', error=1, errorMess="Write a command")
-    else:
-        return render_template('index.html')
+#                 except:
+#                     return render_template('index.html', error=1, errorMess="Date command - d<value>")
+#             else:
+#                 return render_template('index.html', error=1, errorMess="Wrong command")
+#         else:
+#             return render_template('index.html', error=1, errorMess="Write a command")
+#     else:
+#         return render_template('index.html')
 
 
 @app.route("/", methods=["POST", "GET"])
 def home_page():
+    do.create_database()
+    list_of_meas = mo.get_measurements(10)
+    if list_of_meas is None:
+        print("EMPTY")
+    else:
+        mo.print_measurements(list_of_meas)
     if request.method == "POST":
         if request.form['submit_button']== 'Pobierz':
-           print("Pobieranie danych")
+            print("Pobieranie danych")
+            list_of_meas = mo.get_measurements(10)
+            if list_of_meas is None:
+              print("EMPTY")
+            else:
+               mo.print_measurements(list_of_meas)
+
         elif request.form['submit_button']== 'Wyczyść':
             do.clear_database("measurements")
             do.clear_database("measurements_sensors_data")
@@ -83,7 +96,10 @@ def home_page():
         elif request.form['submit_button']== 'Widok':
             print("Widok bazy danych")
 
-    return render_template('homepage.html')
+
+    return render_template('homepage.html',my_list=list_of_meas)
+    # return render_template('homepage.html')
+
 # return "<p>Hello, World!</p>"
 # return "<p>Hello, World!</p>"
 
@@ -116,7 +132,8 @@ def konfig_page():
 
             mes="Aktualny czas"
             print(mes)
-            return render_template('config.html',message=mes)alert( 'Hello, world!' );
+            return render_template('config.html',message=mes)
+            #alert( 'Hello, world!' );
         elif(request.form['submit_button']=='Wznów prace loggera'):
            # if sp.serial_transmit(ser, "GET_TIME") != sp.SERIAL_OK:
            #     return render_template('config.html',message="Command parse error!")
