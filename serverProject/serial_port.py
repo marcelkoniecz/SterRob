@@ -14,7 +14,7 @@ def get_stm_port():
     return -1
 
 
-def open_serial(port, baudrate = 115200, timeout = 10.0) -> serial:
+def open_serial(port, baudrate=115200, timeout=10.0) -> serial:
     try:
         ser = serial.Serial()
         ser.port = port

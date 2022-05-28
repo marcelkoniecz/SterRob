@@ -1,11 +1,14 @@
 from flask import Flask, request, render_template, redirect, url_for
 import time
-from flask_bootstrap import Bootstrap
-from flask_datepicker import datepicker
-#import serial_port as sp
 import datetime
 
-from database_operations import clear_database
+from flask_bootstrap import Bootstrap
+from flask_datepicker import datepicker
+
+import serial_port as sp
+
+import measurements_operations as mo
+import database_operations as do
 
 #ser = sp.open_serial(sp.get_stm_port())
 #print(ser)
@@ -71,12 +74,13 @@ def glowna():
 @app.route("/", methods=["POST", "GET"])
 def home_page():
     if request.method == "POST":
-        if(request.form['submit_button']=='Pobierz'):
+        if request.form['submit_button']== 'Pobierz':
            print("Pobieranie danych")
-        elif(request.form['submit_button']=='Wyczyść'):
-            clear_database()
+        elif request.form['submit_button']== 'Wyczyść':
+            do.clear_database("measurements")
+            do.clear_database("measurements_sensors_data")
             print("Czyszczenie bazy danych")
-        elif(request.form['submit_button']=='Widok'):
+        elif request.form['submit_button']== 'Widok':
             print("Widok bazy danych")
 
     return render_template('homepage.html')
@@ -112,7 +116,7 @@ def konfig_page():
 
             mes="Aktualny czas"
             print(mes)
-            return render_template('config.html',message=mes)
+            return render_template('config.html',message=mes)alert( 'Hello, world!' );
         elif(request.form['submit_button']=='Wznów prace loggera'):
            # if sp.serial_transmit(ser, "GET_TIME") != sp.SERIAL_OK:
            #     return render_template('config.html',message="Command parse error!")
