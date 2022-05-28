@@ -7,23 +7,41 @@
 </head>
 
 <body>
-        <div class="header">
-            <a href="/" class="logo">Projekt loggera danych</a>
-            <div class="header-right">
-                <a class="active" href="#home">Zarządzanie danymi</a>
-                <a href="/konfiguracja">Konfiguracja</a>
-                <!--<a href="#about">About</a>-->
-            </div>
+    <div class="header">
+        <a href="/" class="logo">Projekt loggera danych</a>
+        <div class="header-right">
+            <a class="active" href="#home">Zarządzanie danymi</a>
+            <a href="/konfiguracja">Konfiguracja</a>
+            <!--<a href="#about">About</a>-->
+        </div>
 
     </div>
     <form action="#" method="post">
-    <div class="btn-group" ,style="width:100%">
-        <input style="width:25%" type="submit" name="submit_button" value="Pobierz"></input>
-        <input style="width:25%" type="submit" name="submit_button" value="Wyczyść"></input>
-        <input style="width:25%" type="submit" name="submit_button" value="Widok"></input>
-    </div>
-</form>
-<!--
+        <div class="btn-group" ,style="width:100%">
+            <input style="width:25%" type="submit" name="submit_button" value="Pobierz"></input>
+            <input style="width:25%" type="submit" name="submit_button" value="Wyczyść"></input>
+            <input style="width:25%" type="submit" name="submit_button" value="Widok"></input>
+        </div>
+    </form>
+    <table class="stal">
+        <tr>
+            <th>Time of measurment</th>
+            {%for x in range(1,10)%}
+            <th>{{x}} </th>
+            {% endfor %}
+        </tr>
+        {%for arg in my_list%}
+            <tr>
+            <td> {{arg[0]}}</td>
+            {%for n in range(0,9)%}
+            <td> {{arg[1][n]}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <!--
     <div class="btn-group" ,style="width:100%">
         <button style="width:25%" name="submit_button" value="Do Something">Pobierz</button>
         <button style="width:25%">Wyczyść</button>

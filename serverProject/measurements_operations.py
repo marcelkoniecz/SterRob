@@ -75,7 +75,7 @@ if __name__ == "__main__":
     #print("BEFORE\n")
     print("Measurements:")
     # db.print_database("measurements")
-    list_of_meas = get_measurements()
+    list_of_meas = get_measurements(10)
     if list_of_meas is None:
         print("EMPTY")
     else:
@@ -83,16 +83,4 @@ if __name__ == "__main__":
     # print("measurements_sensors_data")
     # db.print_database("measurements_sensors_data")
 
-    #insert_measurement(m)
-
-    #print("AFTER\n")
-    #print("measurements")
-    #list_of_meas = get_measurements()
-    #if list_of_meas is None:
-    #    print("EMPTY")
-    #else:
-    #    print_measurements(list_of_meas)
-    # db.print_database("measurements")
-    # print("measurements_sensors_data")
-    # db.print_database("measurements_sensors_data")
 
