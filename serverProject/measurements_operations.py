@@ -1,7 +1,6 @@
 import database_operations as db
+import serial_port as sp
 from typing import NamedTuple
-import sqlite3
-import os
 
 
 class Measurement(NamedTuple):
@@ -68,13 +67,13 @@ def print_measurements(meas_list: list):
 if __name__ == "__main__":
     db.create_database()
 
-    m = Measurement(165000000, list(range(1, 10)))
+    #m = Measurement(165000000, list(range(1, 10)))
 
     # db.clear_database("measurements")
     # db.clear_database("measurements_sensors_data")
 
-    print("BEFORE\n")
-    print("measurements")
+    #print("BEFORE\n")
+    print("Measurements:")
     # db.print_database("measurements")
     list_of_meas = get_measurements()
     if list_of_meas is None:
@@ -84,15 +83,15 @@ if __name__ == "__main__":
     # print("measurements_sensors_data")
     # db.print_database("measurements_sensors_data")
 
-    insert_measurement(m)
+    #insert_measurement(m)
 
-    print("AFTER\n")
-    print("measurements")
-    list_of_meas = get_measurements()
-    if list_of_meas is None:
-        print("EMPTY")
-    else:
-        print_measurements(list_of_meas)
+    #print("AFTER\n")
+    #print("measurements")
+    #list_of_meas = get_measurements()
+    #if list_of_meas is None:
+    #    print("EMPTY")
+    #else:
+    #    print_measurements(list_of_meas)
     # db.print_database("measurements")
     # print("measurements_sensors_data")
     # db.print_database("measurements_sensors_data")

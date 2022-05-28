@@ -19,14 +19,14 @@ HAL_StatusTypeDef storeData(struct measurement mes) {
 		return HAL_ERROR;
 	uint32_t tmp2;
 	tmp2 = mes.time;
-	if (CSP_QSPI_Write(&tmp2, curAddr, 4) != HAL_OK)
+	if (CSP_QSPI_Write((uint8_t *)&tmp2, curAddr, 4) != HAL_OK)
 		return HAL_ERROR;
 
 	curAddr = curAddr + 4;
 	uint16_t tmp = 0;
 	for (int i = 0; i < 9; i++) {
 		tmp = mes.meas[i];
-		if (CSP_QSPI_Write(&tmp, curAddr, 2) != HAL_OK)
+		if (CSP_QSPI_Write((uint8_t *)&tmp, curAddr, 2) != HAL_OK)
 			return HAL_ERROR;
 		curAddr = curAddr + 2;
 	}
@@ -44,7 +44,7 @@ HAL_StatusTypeDef sendData() {
 
 	for (int i = 0; i < (tmpCurAddr / 22); i++) \
 	{
-		if (CSP_QSPI_Read(&readData, dataNum * 22, 22) != HAL_OK)
+		if (CSP_QSPI_Read((uint8_t *)&readData, dataNum * 22, 22) != HAL_OK)
 		{
 			Error_Handler();
 			return HAL_ERROR;
@@ -53,12 +53,13 @@ HAL_StatusTypeDef sendData() {
 		dataNum++;
 		curAddr -= 22;
 		timestamp = (readData[1] << 16) | readData[0];
-		printf("%lu\n", i, timestamp);
+		printf("%lu;", timestamp);
 
 		for (int j = 2; j < 11; j++)
 		{
-			printf("%d\n", readData[j]);
+			printf("%d;", readData[j]);
 		}
+		printf("\n");
 	}
 
 	if(CSP_QSPI_EraseSector(0, tmpCurAddr) != HAL_OK)

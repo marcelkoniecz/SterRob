@@ -14,7 +14,7 @@ def get_stm_port():
     return -1
 
 
-def open_serial(port, baudrate=115200, timeout=10.0) -> serial:
+def open_serial(port=get_stm_port(), baudrate=115200, timeout=10.0) -> serial:
     try:
         ser = serial.Serial()
         ser.port = port
@@ -53,7 +53,8 @@ def serial_transmit(ser: serial, buf: str) -> str:
 def serial_receive(ser: serial) -> bytearray:
     try:
         if ser.is_open:
-            return ser.read_until()
+            r = ser.read_until()
+            return r
     except Exception as e:
         print("Connection error: ", e.__class__)
     return bytearray()

@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for
 import time
-import datetime
+from datetime import datetime
 
 from flask_bootstrap import Bootstrap
 from flask_datepicker import datepicker
@@ -9,22 +9,16 @@ import serial_port as sp
 
 import measurements_operations as mo
 import database_operations as do
+import serial_communication as sc
 
-#ser = sp.open_serial(sp.get_stm_port())
-#print(ser)
-# port = "/dev/ttyACM1"
-# ser=serial.Serial(port,115200)
-# while True:
-#    data=ser.readline()
-#    data_sensor=data.decode('utf8')
-#    print("aa" + data_sensor)
+
+ser = sp.open_serial()
+print(ser)
 
 app = Flask(__name__)
 Bootstrap(app)
 datepicker(app)
 
-# @app.route("/")
-# def home()
 
 @app.route("/home", methods=["POST", "GET"])
 def glowna():
@@ -75,17 +69,21 @@ def glowna():
 def home_page():
     if request.method == "POST":
         if request.form['submit_button']== 'Pobierz':
-           print("Pobieranie danych")
+            print("Pobieranie danych")
+            meas = sc.receive_all_measurements(ser)
+            if meas is not None:
+                for m in meas:
+                    mo.insert_measurement(m)
+
         elif request.form['submit_button']== 'Wyczyść':
+            print("Czyszczenie bazy danych")
             do.clear_database("measurements")
             do.clear_database("measurements_sensors_data")
-            print("Czyszczenie bazy danych")
+
         elif request.form['submit_button']== 'Widok':
             print("Widok bazy danych")
 
     return render_template('homepage.html')
-# return "<p>Hello, World!</p>"
-# return "<p>Hello, World!</p>"
 
 @app.route("/konfiguracja", methods=["POST", "GET"])
 def konfig_page():
@@ -93,41 +91,42 @@ def konfig_page():
 
         if(request.form['submit_button']=='Ustaw wybrany czas'):
             zmienna = request.form["czas"]
-            zmienna2=request.form["kalendarz"]
-            if len(zmienna2)<3:
-                mes="Aby poprawnie ustawić czas należy ustawić date"
+            zmienna2 = request.form["kalendarz"]
+            if len(zmienna2) < 3:
+                mes = "Aby poprawnie ustawić czas należy ustawić datę"
             else:
-               # mes="Ustawianie wybranego czasu: " + zmienna +" "+ zmienna2
-                ts=(datetime.datetime(int(zmienna2[6:10]),int(zmienna2[0:2]),int(zmienna2[3:5]),int(zmienna[0:2]),int(zmienna[3:5]))-datetime.datetime(1970,1,1)).total_seconds()
-                print(ts)
-                mes="Ustawiono: "+ str(ts)
+                ts = int((datetime(int(zmienna2[6:10]),int(zmienna2[0:2]),int(zmienna2[3:5]),
+                        int(zmienna[0:2]),int(zmienna[3:5])) - datetime(1970,1,1)).total_seconds()) - 2 * 3600
+                if sc.set_time(ser, ts) is True:
+                    mes = "Błąd komunikacji, nie można ustawić daty i czasu"
+                else:
+                    date_time = datetime.fromtimestamp(ts)
+                    message = date_time.strftime("%d/%m/%Y, %H:%M:%S")
+                    mes = "Ustawiono następującyą datę i czas: "+ str(message)
+
             return render_template('config.html',message=mes)
 
         elif(request.form['submit_button']=='Odczytaj aktualny czas'):
-           # if sp.serial_transmit(ser, "GET_TIME") != sp.SERIAL_OK:
-           #     return render_template('config.html',message="Command parse error!")
-           # data = sp.serial_receive(ser)
-           # if len(data) == 0:
-           #      return render_template('config.html',message="No data received!")
-           # timestamp = int(data.decode("utf-8"))
-           # print(timestamp)
-           # date_time = datetime.fromtimestamp(timestamp)
-           # return render_template('config.html',message=date_time.strftime("%d/%m/%Y, %H:%M:%S"))
+            ts = sc.get_time(ser)
+            if ts is not None:
+                date_time = datetime.fromtimestamp(ts)
+                message = date_time.strftime("%d/%m/%Y, %H:%M:%S")
+                mes = "Obecna data i czas urządzenia: " + str(message)
+            else:
+                mes = "Błąd odczytu danych z urządzenia"
+            return render_template('config.html', message=mes)
 
-            mes="Aktualny czas"
-            print(mes)
-            return render_template('config.html',message=mes)alert( 'Hello, world!' );
         elif(request.form['submit_button']=='Wznów prace loggera'):
-           # if sp.serial_transmit(ser, "GET_TIME") != sp.SERIAL_OK:
-           #     return render_template('config.html',message="Command parse error!")
-            mes="Praca loggera została wznowiona"
-            print(mes)
+            if sc.work_mode_on(ser) is True:
+                mes = "Błąd wysyłania polecenia do urządzenia"
+            else:
+                mes="Praca loggera została wznowiona"
             return render_template('config.html',message=mes)
+
         elif(request.form['submit_button']=='Zatrzymaj logger'):
-           # if sp.serial_transmit(ser, "GET_TIME") != sp.SERIAL_OK:
-           #     return render_template('config.html',message="Command parse error!")
-            mes="Logger zastał zatrzymany"
-            print(mes)
+            if sc.work_mode_off(ser) is True:
+                mes = "Błąd wysyłania polecenia do urządzenia"
+            else:
+                mes="Logger danych został zatrzymany"
             return render_template('config.html',message=mes)
-    #if request.method=="GET"
     return render_template('config.html')

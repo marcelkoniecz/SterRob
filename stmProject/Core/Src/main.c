@@ -103,27 +103,23 @@ HAL_StatusTypeDef runCommand(Command com)
 
 		setDate(t->tm_mday, t->tm_mon + 1, t->tm_year - 100, t->tm_wday + 1);
 		setTime(t->tm_sec, t->tm_min, t->tm_hour);
-		printf("OK\n");
-
 		break;
 	}
 	case GET_ALL_MEAS: // print all saved measurments and clear memory
 	{
-		if(sendData() == HAL_OK)
-			printf("OK\n");
-		else
-			printf("ERROR\n");
+		if(sendData() != HAL_OK)
+			return HAL_ERROR;
 		break;
 	}
 	case WORK_MOD_ON: // stop making new measurements
 	{
-		working_mode = 0;
+		working_mode = 1;
 		break;
 
 	}
 	case WORK_MOD_OFF: // start making new measurements
 	{
-		working_mode = 1;
+		working_mode = 0;
 		break;
 	}
 	case CHANGE_INT: // change interval between measurements
@@ -131,7 +127,6 @@ HAL_StatusTypeDef runCommand(Command com)
 		if(com.data > 0)
 		{
 			meas_interval = com.data;
-			printf("OK\n");
 		}
 		else
 			return HAL_ERROR;
@@ -183,7 +178,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			if(ParseData(RxBuf, size) == HAL_OK)
 			{
 				printf("OK\n");
-				if(runCommand(com) != HAL_OK)
+				if(runCommand(com) == HAL_OK)
+				{
+					printf("OK\n");
+				}
+				else
 				{
 					printf("ERROR\n");
 				}
