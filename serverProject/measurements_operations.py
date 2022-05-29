@@ -1,5 +1,4 @@
 import database_operations as db
-import serial_port as sp
 from typing import NamedTuple
 
 
@@ -46,7 +45,7 @@ def get_measurements(limit=100, offset=0):
             return None
         elif (offset + limit) > num_rows:
             limit = num_rows - offset
-    sql = "SELECT id, time FROM measurements ORDER BY id LIMIT " + str(limit) + " OFFSET " + str(offset)
+    sql = "SELECT id, time FROM measurements ORDER BY id DESC LIMIT " + str(limit) + " OFFSET " + str(offset)
     rows = cur.execute(sql).fetchall()
 
     for row in rows:
@@ -75,7 +74,7 @@ if __name__ == "__main__":
     #print("BEFORE\n")
     print("Measurements:")
     # db.print_database("measurements")
-    list_of_meas = get_measurements(10)
+    list_of_meas = get_measurements()
     if list_of_meas is None:
         print("EMPTY")
     else:

@@ -105,6 +105,42 @@
     cursor: pointer; /* Pointer/hand icon */
     float: left; /* Float the buttons side by side */
   }
+
+  .btn-group3 input {
+    background-color: rgb(133, 178, 245); /* Green background */
+    font-size: 20px;
+    border: 0px solid green; /* Green border */
+    color: black; /* White text */
+    padding: 20px 24px; /* Some padding */
+    margin-top: 50px;
+    margin-left: 15%;
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+  }
+
+    #btn-group3-value {
+    font-size: 20px;
+    border: 0px solid green; /* Green border */
+    color: black; /* White text */
+    padding: 20px 24px; /* Some padding */
+    margin-top: 50px;
+    margin-left: 15%;
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+  }
+
+    #btn-group3-submit {
+    background-color: rgb(133, 178, 245); /* Green background */
+    font-size: 20px;
+    border: 0px solid green; /* Green border */
+    color: black; /* White text */
+    padding: 20px 24px; /* Some padding */
+    margin-top: 50px;
+    margin-left: 15%;
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    }
+
   
   .btn-group input:not(:last-child) {
     border-right: none; /* Prevent double borders */

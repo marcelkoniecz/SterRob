@@ -1,5 +1,5 @@
 import serial.tools.list_ports
-import sys
+
 
 SERIAL_OK = b'OK\n'
 SERIAL_ERROR = b'ERROR\n'

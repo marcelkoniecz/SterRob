@@ -1,4 +1,3 @@
-import database_operations as db
 import serial_port as sp
 import measurements_operations as mo
 import serial.tools.list_ports
@@ -11,6 +10,7 @@ def receive_all_measurements(ser: serial):
         if sp.serial_transmit(ser, "GET_ALL_MEAS") == sp.SERIAL_OK:
             while True:
                 row = sp.serial_receive(ser)
+                print(row)
                 if len(row) == 0:
                     return None
                 elif row == sp.SERIAL_OK:

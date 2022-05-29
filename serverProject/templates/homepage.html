@@ -26,15 +26,15 @@
     <table class="stal">
         <tr>
             <th>Time of measurment</th>
-            {%for x in range(1,10)%}
+            {%for x in range(1, 10)%}
             <th>{{x}} </th>
             {% endfor %}
         </tr>
-        {%for arg in my_list%}
+        {%for arg in range(0, length)%}
             <tr>
-            <td> {{arg[0]}}</td>
+            <td> {{tm_list[arg][0]}}</td>
             {%for n in range(0,9)%}
-            <td> {{arg[1][n]}}</td>
+            <td> {{tm_list[arg][1][n]}} %</td>
             {% endfor %}
         </tr>
         {% endfor %}
