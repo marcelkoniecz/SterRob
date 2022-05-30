@@ -89,7 +89,11 @@ def home_page():
                 page[1] -= page[0]
         elif request.form['submit_button'] == '>':
             print("Przesun baze w lewo")
-            page[1] += page[0]
+            print(do.count_databases_rows("measurements"))
+            print(page[1])
+            print(page[0])
+            if do.count_databases_rows("measurements") >= page[1] + page[0]:
+                page[1] += page[0]
 
 
     list_of_meas = mo.get_measurements(page[0], page[1])

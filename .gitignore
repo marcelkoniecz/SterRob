@@ -60,3 +60,4 @@ serverProject/.venv
 
 #STMIde
 stmProject/Debug
+stmProject/Release

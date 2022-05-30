@@ -245,7 +245,7 @@ int main(void)
 	 }
 
 	 if (CSP_QSPI_Erase_Chip() != HAL_OK) {
-	 Error_Handler();
+		 Error_Handler();
 	 }
 
 
