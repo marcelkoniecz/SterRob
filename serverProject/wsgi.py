@@ -10,8 +10,9 @@ import measurements_operations as mo
 import database_operations as do
 import serial_communication as sc
 
-ser = sp.open_serial()
-print(ser)
+ser = [sp.open_serial()]
+page = [10, 0]
+print(ser[0])
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -70,7 +71,7 @@ def home_page():
     if request.method == "POST":
         if request.form['submit_button'] == 'Pobierz':
             print("Pobieranie danych")
-            meas = sc.receive_all_measurements(ser)
+            meas = sc.receive_all_measurements(ser[0])
             print("Pobrano z urządzenia")
             if meas is not None:
                 print("Dodawanie do bazy")
@@ -82,18 +83,21 @@ def home_page():
             do.clear_database("measurements")
             do.clear_database("measurements_sensors_data")
 
-        elif request.form['submit_button'] == 'Widok':
-            print("Widok bazy danych")
         elif request.form['submit_button'] == '<':
             print("Przesun baze w prawo")
+            if page[1] > 0:
+                page[1] -= page[0]
         elif request.form['submit_button'] == '>':
-            print("Przesun baze w lewo")    
+            print("Przesun baze w lewo")
+            page[1] += page[0]
 
-    list_of_meas = mo.get_measurements()
+
+    list_of_meas = mo.get_measurements(page[0], page[1])
     tm_list = []
 
     if list_of_meas is None:
         print("EMPTY")
+        list_of_meas = []
     else:
         mo.print_measurements(list_of_meas)
         for i in list_of_meas:
@@ -120,7 +124,8 @@ def konfig_page():
                 ts = int((datetime(int(zmienna2[6:10]), int(zmienna2[0:2]), int(zmienna2[3:5]),
                                    int(zmienna[0:2]), int(zmienna[3:5])) - datetime(1970, 1,
                                                                                     1)).total_seconds()) - 2 * 3600
-                if sc.set_time(ser, ts) is True:
+
+                if sc.set_time(ser[0], ts) is True:
                     mes = "Błąd komunikacji, nie można ustawić daty i czasu"
                 else:
                     date_time = datetime.fromtimestamp(ts)
@@ -130,7 +135,7 @@ def konfig_page():
             return render_template('config.html', message=mes)
 
         elif (request.form['submit_button'] == 'Odczytaj aktualny czas'):
-            ts = sc.get_time(ser)
+            ts = sc.get_time(ser[0])
             if ts is not None:
                 date_time = datetime.fromtimestamp(ts)
                 message = date_time.strftime("%d/%m/%Y, %H:%M:%S")
@@ -140,14 +145,14 @@ def konfig_page():
             return render_template('config.html', message=mes)
 
         elif (request.form['submit_button'] == 'Wznów prace loggera'):
-            if sc.work_mode_on(ser) is True:
+            if sc.work_mode_on(ser[0]) is True:
                 mes = "Błąd wysyłania polecenia do urządzenia"
             else:
                 mes = "Praca loggera została wznowiona"
             return render_template('config.html', message=mes)
 
         elif (request.form['submit_button'] == 'Zatrzymaj logger'):
-            if sc.work_mode_off(ser) is True:
+            if sc.work_mode_off(ser[0]) is True:
                 mes = "Błąd wysyłania polecenia do urządzenia"
             else:
                 mes = "Logger danych został zatrzymany"
@@ -155,13 +160,37 @@ def konfig_page():
 
         elif (request.form['submit_button'] == 'Zmień interwał między pomiarami'):
             int_val = request.form['int_val']
-            if sc.change_interval(ser, int(int_val)) is True:
+            if sc.change_interval(ser[0], int(int_val)) is True:
                 mes = "Błąd wysyłania polecenia do urządzenia"
             else:
                 mes = "Logger danych wykonuje teraz pomiary co " + str(int_val) + " sekund"
             return render_template('config.html', message=mes)
+
         elif (request.form['submit_button'] == 'Połącz z urządzeniem'):
-            ser = sp.open_serial()
+            print("Przed:")
+            print(ser[0])
+            if sp.is_port_open(ser[0]):
+                ser[0].close()
+                ser[0] = None
+            ser[0] = sp.open_serial()
+            if sp.is_port_open(ser[0]):
+                mes = "Port został poprawnie otwarty"
+            else:
+                mes = "Błąd otwierania portu szeregowego lub nie znaleziono urządzenia"
+            print("Po:")
+            print(ser[0])
+
+            #if sp.is_port_open(ser[0]):
+            #    mes = "Port jest obecnie otwarty"
+            # else:
+            #    print(ser[0])
+            #    ser[0] = sp.open_serial()
+            #    print(ser[0])
+            #    if sp.is_port_open(ser[0]):
+            #        mes = "Port został poprawnie otwarty"
+            #    else:
+            #        mes = "Błąd otwierania portu szeregowego lub nie znaleziono urządzenia"
             return render_template('config.html', message=mes)
 
     return render_template('config.html')
+

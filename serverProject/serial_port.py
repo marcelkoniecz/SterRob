@@ -14,6 +14,13 @@ def get_stm_port():
     return -1
 
 
+def is_port_open(ser: serial) -> bool:
+    if ser is not None:
+        return ser.is_open
+    else:
+        return False
+
+
 def open_serial(port=get_stm_port(), baudrate=115200, timeout=10.0) -> serial:
     try:
         ser = serial.Serial()
@@ -22,7 +29,9 @@ def open_serial(port=get_stm_port(), baudrate=115200, timeout=10.0) -> serial:
         ser.timeout = timeout
         ser.open()
     except Exception as e:
-        print("Connection error: ", e.__class__)
+        print("Connection error: ", e.__class__, e.__context__)
+        ser.close()
+        ser = None
 
     return ser
 
@@ -63,5 +72,8 @@ def serial_receive(ser: serial) -> bytearray:
 if __name__ == "__main__":
     s = open_serial(get_stm_port())
     print(serial_transmit(s, "GET_TIME"))
+    print(serial_receive(s))
     print(serial_transmit(s, "SET_TIME1650900000"))
+    print(serial_receive(s))
     print(serial_transmit(s, "GET_TIME"))
+    print(serial_receive(s))

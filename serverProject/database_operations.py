@@ -80,6 +80,20 @@ def clear_database(name: str):
     con.close()
 
 
+def count_databases_rows(name: str) -> int:
+    con = connect_database()
+    cur = con.cursor()
+    sql = "SELECT COUNT(*) FROM " + name
+    cur.execute(sql)
+
+    num = 0
+    rows = cur.fetchone()
+    if rows is not None:
+        num = sum(rows)
+
+    con.close()
+    return num
+
 def print_database(name: str):
     con = connect_database()
     cur = con.cursor()

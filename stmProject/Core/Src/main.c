@@ -268,6 +268,18 @@ int main(void)
 			storeData(mes);
 			f_data_ready = RESET;
 		}
+
+		if(huart2.ErrorCode)
+		{
+			__disable_irq();
+
+			huart2.ErrorCode = HAL_UART_ERROR_NONE;
+			huart2.gState = HAL_UART_STATE_RESET;
+			huart2.RxState = HAL_UART_STATE_RESET;
+
+			__enable_irq();
+			HAL_UART_Receive_DMA(&huart2, RxBuf, 2);
+		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
