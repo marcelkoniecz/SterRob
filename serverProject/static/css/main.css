@@ -163,6 +163,42 @@
 
   }
 
+  .btn-group4 input{
+    background-color: rgb(133, 178, 245); /* Green background */
+    font-size: 20px;
+    border: 0px solid green; /* Green border */
+    color: black; /* White text */
+    padding: 20px 24px; /* Some padding */
+    margin-top: 50px;
+    margin-left: 15%;
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+  }
+
+input.wybor{
+  margin-left: 100px;
+  background-color: rgb(255, 255, 255); /* Green background */
+  font-size: 20px;
+  border: 1px solid rgb(0, 0, 0); /* Green border */
+  color: black; /* White text */
+  padding: 20px 24px; /* Some padding */ 
+  margin-top: 50px;
+  margin-left: 15%;
+  margin-right: 15%;
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+}
+
+.btn-group5 input{
+  background-color: rgb(133, 178, 245); /* Green background */
+  font-size: 20px;
+  border: 0px solid green; /* Green border */
+  color: black; /* White text */
+  padding: 20px 24px; /* Some padding */
+  margin: 50px 25% auto 35%;
+  cursor: pointer; /* Pointer/hand icon */
+ /* float: left; /* Float the buttons side by side */
+}
 
 
   input.wpr {

@@ -20,12 +20,15 @@
         <div class="btn-group" ,style="width:100%">
             <input style="width:25%" type="submit" name="submit_button" value="Pobierz"></input>
             <input style="width:25%" type="submit" name="submit_button" value="Wyczyść"></input>
-            <input style="width:25%" type="submit" name="submit_button" value="Widok"></input>
+            <input style="width:5%; margin-left:13%" type="submit" name="submit_button" value="<"></input>
+            <input style="width:5%; margin-left:50px" type="submit" name="submit_button" value=">"></input>
         </div>
     </form>
+
+    {%if length%}
     <table class="stal">
         <tr>
-            <th>Time of measurment</th>
+            <th>Czas wykonania pomiaru</th>
             {%for x in range(1, 10)%}
             <th>{{x}} </th>
             {% endfor %}
@@ -40,7 +43,7 @@
         {% endfor %}
 
     </table>
-
+    {%endif%}
     <!--
     <div class="btn-group" ,style="width:100%">
         <button style="width:25%" name="submit_button" value="Do Something">Pobierz</button>

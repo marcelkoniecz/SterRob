@@ -84,6 +84,10 @@ def home_page():
 
         elif request.form['submit_button'] == 'Widok':
             print("Widok bazy danych")
+        elif request.form['submit_button'] == '<':
+            print("Przesun baze w prawo")
+        elif request.form['submit_button'] == '>':
+            print("Przesun baze w lewo")    
 
     list_of_meas = mo.get_measurements()
     tm_list = []
@@ -155,6 +159,9 @@ def konfig_page():
                 mes = "Błąd wysyłania polecenia do urządzenia"
             else:
                 mes = "Logger danych wykonuje teraz pomiary co " + str(int_val) + " sekund"
+            return render_template('config.html', message=mes)
+        elif (request.form['submit_button'] == 'Połącz z urządzeniem'):
+            ser = sp.open_serial()
             return render_template('config.html', message=mes)
 
     return render_template('config.html')
