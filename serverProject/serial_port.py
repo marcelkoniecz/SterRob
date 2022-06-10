@@ -8,7 +8,7 @@ SERIAL_ERROR = b'ERROR\n'
 def get_stm_port():
     ports = serial.tools.list_ports.comports()
     for port in ports:
-        if port.description.find("STM") != -1:
+        if port.description.find("Prolific") != -1:
             return port.device
 
     return -1
@@ -21,7 +21,7 @@ def is_port_open(ser: serial) -> bool:
         return False
 
 
-def open_serial(port=get_stm_port(), baudrate=115200, timeout=10.0) -> serial:
+def open_serial(port=get_stm_port(), baudrate=38400, timeout=10.0) -> serial:
     try:
         ser = serial.Serial()
         ser.port = port

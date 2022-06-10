@@ -38,6 +38,8 @@ void readMeasurements(ADC_HandleTypeDef *hadc, Measurement *m)
 		HAL_GPIO_WritePin(S2_GPIO_Port, S2_Pin, (i>>2) & 0x01);
 		HAL_GPIO_WritePin(S3_GPIO_Port, S3_Pin, (i>>3) & 0x01);
 
+		for(int i = 0; i < 10000; ++i){}
+
 		HAL_ADC_Start(hadc);
 
 		if (HAL_ADC_PollForConversion(hadc, 10) == HAL_OK)

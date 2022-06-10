@@ -61,6 +61,8 @@
 
 /* USER CODE BEGIN PV */
 
+uint8_t error_code = 0;
+
 uint8_t RxBuf[RxBuf_SIZE];
 uint8_t MainBuf[MainBuf_SIZE];
 uint8_t size = 0;
@@ -217,7 +219,15 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  uint8_t i = 0;
+  error_code +=  __HAL_RCC_GET_FLAG(RCC_FLAG_BORRST) << i++;
+  error_code +=  __HAL_RCC_GET_FLAG(RCC_FLAG_OBLRST) << i++;
+  error_code +=  __HAL_RCC_GET_FLAG(RCC_FLAG_PINRST) << i++;
+  error_code +=  __HAL_RCC_GET_FLAG(RCC_FLAG_FWRST) << i++;
+  error_code +=  __HAL_RCC_GET_FLAG(RCC_FLAG_SFTRST) << i++;
+  error_code +=  __HAL_RCC_GET_FLAG(RCC_FLAG_IWDGRST) << i++;
+  error_code +=  __HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) << i++;
+  error_code +=  __HAL_RCC_GET_FLAG(RCC_FLAG_LPWRRST) << i++;
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -233,27 +243,25 @@ int main(void)
   MX_ADC1_Init();
   MX_RTC_Init();
   MX_DMA_Init();
-  MX_USART2_UART_Init();
   MX_TIM2_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
 
 	 //Inicjalizacja
 
-	 if (CSP_QUADSPI_Init() != HAL_OK) {
-	 Error_Handler();
-	 }
-
-	 if (CSP_QSPI_Erase_Chip() != HAL_OK) {
+	 if (CSP_QUADSPI_Init() != HAL_OK)
 		 Error_Handler();
-	 }
+
+	 if (CSP_QSPI_Erase_Chip() != HAL_OK)
+		 Error_Handler();
 
 
 	 //Ustawienie daty i godziny
-	 if (setDate(25, 04, 22, 1) != HAL_OK)
+	 if (setDate(13, 06, 22, 1) != HAL_OK)
 		 Error_Handler();
 
-	 if (setTime(00,32,17) != HAL_OK)
+	 if (setTime(00,30,17) != HAL_OK)
 		 Error_Handler();
 
   /* USER CODE END 2 */
@@ -263,6 +271,7 @@ int main(void)
 	HAL_UART_Receive_DMA(&huart2, RxBuf, 2);
 	init_ready = SET;
 	while (1) {
+
 		if(f_data_ready == SET)
 		{
 			storeData(mes);
@@ -273,9 +282,8 @@ int main(void)
 		{
 			__disable_irq();
 
-			huart2.ErrorCode = HAL_UART_ERROR_NONE;
-			huart2.gState = HAL_UART_STATE_RESET;
-			huart2.RxState = HAL_UART_STATE_RESET;
+			HAL_UART_MspDeInit(&huart2);
+			HAL_UART_MspInit(&huart2);
 
 			__enable_irq();
 			HAL_UART_Receive_DMA(&huart2, RxBuf, 2);
@@ -305,14 +313,15 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE|RCC_OSCILLATORTYPE_MSI;
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.MSIState = RCC_MSI_ON;
+  RCC_OscInitStruct.MSICalibrationValue = 0;
+  RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
   RCC_OscInitStruct.PLL.PLLM = 1;
-  RCC_OscInitStruct.PLL.PLLN = 10;
+  RCC_OscInitStruct.PLL.PLLN = 16;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
@@ -329,7 +338,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -338,9 +347,9 @@ void SystemClock_Config(void)
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
   PeriphClkInit.AdcClockSelection = RCC_ADCCLKSOURCE_PLLSAI1;
   PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
-  PeriphClkInit.PLLSAI1.PLLSAI1Source = RCC_PLLSOURCE_HSI;
+  PeriphClkInit.PLLSAI1.PLLSAI1Source = RCC_PLLSOURCE_MSI;
   PeriphClkInit.PLLSAI1.PLLSAI1M = 1;
-  PeriphClkInit.PLLSAI1.PLLSAI1N = 8;
+  PeriphClkInit.PLLSAI1.PLLSAI1N = 24;
   PeriphClkInit.PLLSAI1.PLLSAI1P = RCC_PLLP_DIV7;
   PeriphClkInit.PLLSAI1.PLLSAI1Q = RCC_PLLQ_DIV2;
   PeriphClkInit.PLLSAI1.PLLSAI1R = RCC_PLLR_DIV2;
@@ -355,6 +364,9 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+  /** Enable MSI Auto calibration
+  */
+  HAL_RCCEx_EnableMSIPLLMode();
 }
 
 /* USER CODE BEGIN 4 */
